@@ -4,33 +4,65 @@
  */
 package dao;
 
-import entity.warehouse;
 import entity.location;
+import entity.warehouse;
 import util.DbConnection;
 import java.sql.*;
 import java.util.ArrayList;
+
 /**
  *
  * @author Efe
  */
 public class warehouseDAO extends DbConnection{
     
-    public void insert(warehouse w) {
+    private locationDAO lDao;
+
+    public locationDAO getlDao() {
+        if(this.lDao == null) {
+            this.lDao = new locationDAO();
+        }
+        return lDao;
+    }
+
+    public void setlDao(locationDAO lDao) {
+        this.lDao = lDao;
+    }
+    
+    public warehouse getById(int id) {
+        warehouse w = null;
+        
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into warehouse values(" + w.getWarehouse_id() + ", " 
-                            + w.getLocation().getLocation_id() + ")");
+            ResultSet rs = st.executeQuery("select * from warehouse where warehouse_id=" + id);
+            rs.next();
+            
+            location l = this.getlDao().getById(rs.getInt("lcoation_id"));
+            w = new warehouse(rs.getInt("warehouse_id"), l);
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
-        } 
+        }
+        
+        return w;
+    }
+    
+    public void insert(warehouse w) {
+        try {
+            Statement st = super.connect().createStatement();
+            st.executeUpdate("insert into warehouse values(" + w.getWarehouse_id() + ", " + 
+                    w.getLocation().getLocation_id() + ")");
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public void update(warehouse w) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("update warehouse set location_id=" + w.getLocation().getLocation_id()
-                            + " where warehouse_id=" + w.getWarehouse_id());
+            st.executeUpdate("update warehouse set location_id=" + w.getLocation().getLocation_id() + 
+                    " where warehouse_id=" + w.getWarehouse_id());
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
@@ -52,12 +84,11 @@ public class warehouseDAO extends DbConnection{
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select warehouse.warehouse_id, location.* from warehouse join location"
-                                        + " on warehouse.location_id = location.location_id order by warehouse.warehouse_id");
+            ResultSet rs = st.executeQuery("select * from warehouse order by warehouse_id");
             
             while(rs.next()) {
-                list.add(new warehouse(rs.getInt("warehouse_id"),
-                        new location(rs.getInt("location_id"), rs.getString("city"), rs.getString("country"))));
+                location l = this.getlDao().getById(rs.getInt("location_id"));
+                list.add(new warehouse(rs.getInt("warehouse_id"), l));
             }
         }
         catch(Exception e) {

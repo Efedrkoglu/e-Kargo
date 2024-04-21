@@ -6,7 +6,6 @@ package dao;
 
 import entity.employee;
 import entity.warehouse;
-import entity.location;
 import util.DbConnection;
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,23 +15,36 @@ import java.util.ArrayList;
  */
 public class employeeDAO extends DbConnection{
     
+    private warehouseDAO wDao;
+
+    public warehouseDAO getwDao() {
+        if(this.wDao == null) {
+            this.wDao = new warehouseDAO();
+        }
+        return wDao;
+    }
+
+    public void setwDao(warehouseDAO wDao) {
+        this.wDao = wDao;
+    }
+    
     public void insert(employee e) {
         try {
             Statement st = super.connect().createStatement();
             st.executeUpdate("insert into employee values(" + e.getEmployee_id() + ", " + e.getWarehouse().getWarehouse_id()
-                             + ", '" + e.getPhone_number() + "', '" + e.getEmail() + "', '" + e.getName() + "')");
+                            + ", '" + e.getPhone_number() + "', '" + e.getEmail() + "', '" + e.getName() + "')");
         }
         catch(Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
-   
+    
     public void update(employee e) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("update employee set warehouse_id=" + e.getWarehouse().getWarehouse_id() + ", phone_number='"
-                             + e.getPhone_number() + "', email='" + e.getEmail() + "', name='" + e.getName() + "'"
-                             + " where employee_id=" + e.getEmployee_id());
+            st.executeUpdate("update employee set warehouse_id=" + e.getWarehouse().getWarehouse_id() + ", "
+                            + "phone_number='" + e.getPhone_number() + "', email='" + e.getEmail() + "', "
+                            + "name='" + e.getName() + "' where employee_id=" + e.getEmployee_id());
         }
         catch(Exception ex) {
             System.out.println(ex.getMessage());
@@ -54,7 +66,12 @@ public class employeeDAO extends DbConnection{
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("");
+            ResultSet rs = st.executeQuery("select * from employee order by employee_id");
+            
+            while(rs.next()) {
+                warehouse w = this.getwDao().getById(rs.getInt("warehouse_id"));
+                list.add(new employee(rs.getInt("employee_id"), w, rs.getString("phone_number"), rs.getString("email"), rs.getString("name")));
+            }
         }
         catch(Exception ex) {
             System.out.println(ex.getMessage());
@@ -62,4 +79,5 @@ public class employeeDAO extends DbConnection{
         
         return list;
     }
+    
 }

@@ -14,6 +14,22 @@ import java.util.ArrayList;
  */
 public class locationDAO extends DbConnection{
     
+    public location getById(int id) {
+        location l = null;
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select * from location where id =" + id);
+            rs.next();
+            
+            l = new location(rs.getInt("location_id"), rs.getString("city"), rs.getString("country"));
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return l;
+    }
+    
     public void insert(location l) {
         try {
             Statement st = super.connect().createStatement();

@@ -36,6 +36,11 @@ public class warehouse {
     public void setLocation(location location) {
         this.location = location;
     }
+
+    @Override
+    public String toString() {
+        return "warehouse{" + "warehouse_id=" + warehouse_id + ", location_id=" + location.getLocation_id() + '}';
+    }
     
     
 }

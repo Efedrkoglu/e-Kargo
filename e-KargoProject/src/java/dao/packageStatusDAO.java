@@ -15,6 +15,23 @@ import java.util.ArrayList;
  */
 public class packageStatusDAO extends DbConnection{
     
+    public packageStatus getById(int id) {
+        packageStatus ps = null;
+        
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select * from packageStatus where status_id=" + id);
+            rs.next();
+            
+            ps = new packageStatus(rs.getInt("status_id"), rs.getString("description"));
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return ps;
+    }
+    
     public void insert(packageStatus ps) {
         try {
             Statement st = super.connect().createStatement();

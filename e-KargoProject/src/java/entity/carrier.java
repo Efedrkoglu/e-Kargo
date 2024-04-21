@@ -8,40 +8,40 @@ package entity;
  *
  * @author Efe
  */
-public class employee {
+public class carrier {
     
-    private int employee_id;
-    private warehouse warehouse;
+    private int carrier_id;
+    private shipment shipment;
     private String phone_number;
     private String email;
     private String name;
 
-    public employee() {
+    public carrier() {
         
     }
 
-    public employee(int employee_id, warehouse warehouse, String phone_number, String email, String name) {
-        this.employee_id = employee_id;
-        this.warehouse = warehouse;
+    public carrier(int carrier_id, shipment shipment, String phone_number, String email, String name) {
+        this.carrier_id = carrier_id;
+        this.shipment = shipment;
         this.phone_number = phone_number;
         this.email = email;
         this.name = name;
     }
 
-    public int getEmployee_id() {
-        return employee_id;
+    public int getCarrier_id() {
+        return carrier_id;
     }
 
-    public void setEmployee_id(int employee_id) {
-        this.employee_id = employee_id;
+    public void setCarrier_id(int carrier_id) {
+        this.carrier_id = carrier_id;
     }
 
-    public warehouse getWarehouse() {
-        return warehouse;
+    public shipment getShipment() {
+        return shipment;
     }
 
-    public void setWarehouse(warehouse warehouse) {
-        this.warehouse = warehouse;
+    public void setShipment(shipment shipment) {
+        this.shipment = shipment;
     }
 
     public String getPhone_number() {
@@ -70,7 +70,7 @@ public class employee {
 
     @Override
     public String toString() {
-        return "employee{" + "employee_id=" + employee_id + ", warehouse_id=" + warehouse.getWarehouse_id() + ", phone_number=" + phone_number + ", email=" + email + ", name=" + name + '}';
+        return "carrier{" + "carrier_id=" + carrier_id + ", shipment_id=" + shipment.getShipment_id() + ", phone_number=" + phone_number + ", email=" + email + ", name=" + name + '}';
     }
     
     

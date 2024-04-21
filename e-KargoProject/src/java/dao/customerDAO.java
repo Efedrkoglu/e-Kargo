@@ -14,6 +14,23 @@ import java.util.ArrayList;
  */
 public class customerDAO extends DbConnection{
     
+    public customer getById(int id) {
+        customer c = null;
+        
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select * from customer where customer_id=" + id);
+            rs.next();
+            
+            c = new customer(rs.getInt("customer_id"), rs.getString("phone_number"), rs.getString("email"), rs.getString("name"));
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return c;
+    }
+    
     public void insert(customer c) {
         try {
             Statement st = super.connect().createStatement();
