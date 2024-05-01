@@ -37,7 +37,7 @@ public class warehouseDAO extends DbConnection{
             ResultSet rs = st.executeQuery("select * from warehouse where warehouse_id=" + id);
             rs.next();
             
-            location l = this.getlDao().getById(rs.getInt("lcoation_id"));
+            location l = this.getlDao().getById(rs.getInt("location_id"));
             w = new warehouse(rs.getInt("warehouse_id"), l);
         }
         catch(Exception e) {
