@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @SessionScoped
 public class packageStatusBean extends baseController<packageStatus, packageStatusDAO> implements Serializable, IController<packageStatus>{
 
-    packageStatusBean() {
+    public packageStatusBean() {
         
     }
 
@@ -41,13 +41,13 @@ public class packageStatusBean extends baseController<packageStatus, packageStat
     }
 
     @Override
-    public void insert(packageStatus entity) {
+    public void insert() {
         super.getDao().insert(entity);
         super.setEntity(newEntity());
     }
 
     @Override
-    public void update(packageStatus entity) {
+    public void update() {
         super.getDao().update(entity);
         super.setEntity(newEntity());
     }

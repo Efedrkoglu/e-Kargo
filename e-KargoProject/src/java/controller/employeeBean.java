@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @SessionScoped
 public class employeeBean extends baseController<employee, employeeDAO> implements Serializable, IController<employee> {
     
-    employeeBean() {
+    public employeeBean() {
         
     }
     
@@ -40,13 +40,13 @@ public class employeeBean extends baseController<employee, employeeDAO> implemen
     }
 
     @Override
-    public void insert(employee entity) {
+    public void insert() {
         super.getDao().insert(entity);
         super.setEntity(newEntity());
     }
 
     @Override
-    public void update(employee entity) {
+    public void update() {
         super.getDao().update(entity);
         super.setEntity(newEntity());
     }

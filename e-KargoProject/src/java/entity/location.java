@@ -46,6 +46,27 @@ public class location {
     public void setCountry(String country) {
         this.country = country;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + this.location_id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final location other = (location) obj;
+        return this.location_id == other.location_id;
+    }
     
 }

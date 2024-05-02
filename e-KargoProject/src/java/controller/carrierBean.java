@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @SessionScoped
 public class carrierBean extends baseController<carrier, carrierDAO> implements Serializable, IController<carrier> {
     
-    carrierBean() {
+    public carrierBean() {
         
     }
     
@@ -40,13 +40,13 @@ public class carrierBean extends baseController<carrier, carrierDAO> implements 
     }
 
     @Override
-    public void insert(carrier entity) {
+    public void insert() {
         super.getDao().insert(entity);
         super.setEntity(newEntity());
     }
 
     @Override
-    public void update(carrier entity) {
+    public void update() {
         super.getDao().update(entity);
         super.setEntity(newEntity());
     }

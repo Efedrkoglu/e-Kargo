@@ -12,9 +12,9 @@ import java.util.ArrayList;
  */
 public abstract class baseController <E, D>{
     
-    private E entity;
-    private D dao;
-    private ArrayList<E> list;
+    protected E entity;
+    protected D dao;
+    protected ArrayList<E> list;
     
     public abstract E newEntity();
     public abstract D newDAO();

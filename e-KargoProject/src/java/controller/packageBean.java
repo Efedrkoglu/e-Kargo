@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @SessionScoped
 public class packageBean extends baseController<Package, packageDAO> implements Serializable, IController<Package> {
     
-    packageBean() {
+    public packageBean() {
         
     }
     
@@ -41,13 +41,13 @@ public class packageBean extends baseController<Package, packageDAO> implements 
     }
 
     @Override
-    public void insert(Package entity) {
+    public void insert() {
         super.getDao().insert(entity);
         super.setEntity(newEntity());
     }
 
     @Override
-    public void update(Package entity) {
+    public void update() {
         super.getDao().update(entity);
         super.setEntity(newEntity());
     }

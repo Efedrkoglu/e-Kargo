@@ -18,7 +18,7 @@ public class locationDAO extends DbConnection{
         location l = null;
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from location where id =" + id);
+            ResultSet rs = st.executeQuery("select * from location where location_id =" + id);
             rs.next();
             
             l = new location(rs.getInt("location_id"), rs.getString("city"), rs.getString("country"));

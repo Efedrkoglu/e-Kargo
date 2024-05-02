@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public interface IController <E>{
     public ArrayList<E> select();
-    public void insert(E entity);
-    public void update(E entity);
+    public void insert();
+    public void update();
     public void delete(E entity);
 }

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Customer</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            Navigation
+            <h:commandButton action="/index" value="home"/>
+        </h:form>
+        <hr/>
+        <h:form>
+            id: <h:inputText value="#{customerBean.entity.customer_id}" />
+            phone number: <h:inputText value="#{customerBean.entity.phone_number}" />
+            email: <h:inputText value="#{customerBean.entity.email}" />
+            name: <h:inputText value="#{customerBean.entity.name}" />
+            <h:commandButton rendered="#{controlBean.update == 0}" action="#{customerBean.insert()}" value="insert"/>
+            <h:commandButton rendered="#{controlBean.update != 0}" value="update">
+                <f:actionListener binding="#{customerBean.update()}"/>
+                <f:actionListener binding="#{controlBean.setUpdate(0)}"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{controlBean.update != 0}" value="clear form">
+                <f:actionListener binding="#{customerBean.setEntity(customerBean.newEntity())}"/>
+                <f:actionListener binding="#{controlBean.setUpdate(0)}"/>
+            </h:commandButton>
+        </h:form>
+        <hr/>
+        <h:form>
+            <h:dataTable value="#{customerBean.select()}" var="c">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{c.customer_id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Number</f:facet>
+                    #{c.phone_number}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    #{c.email}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    #{c.name}
+                </h:column>
+                <h:column>
+                    <h:commandButton value="update">
+                        <f:actionListener binding="#{customerBean.setEntity(c)}"/>
+                        <f:actionListener binding="#{controlBean.setUpdate(1)}"/>
+                    </h:commandButton>
+                    <h:commandButton action="#{customerBean.delete(c)}" value="delete"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>

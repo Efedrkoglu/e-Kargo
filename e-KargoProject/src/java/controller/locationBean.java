@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @SessionScoped
 public class locationBean extends baseController<location, locationDAO> implements Serializable, IController<location> {
 
-    locationBean() {
+    public locationBean() {
         
     }
     
@@ -40,13 +40,13 @@ public class locationBean extends baseController<location, locationDAO> implemen
     }
 
     @Override
-    public void insert(location entity) {
+    public void insert() {
         super.getDao().insert(entity);
         super.setEntity(newEntity());
     }
 
     @Override
-    public void update(location entity) {
+    public void update() {
         super.getDao().update(entity);
         super.setEntity(newEntity());
     }

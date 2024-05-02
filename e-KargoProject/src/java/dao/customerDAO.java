@@ -56,7 +56,7 @@ public class customerDAO extends DbConnection{
     public void delete(customer c) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("delete from customer where cutomer_id=" + c.getCustomer_id());
+            st.executeUpdate("delete from customer where customer_id=" + c.getCustomer_id());
         }
         catch(Exception e) {
             System.out.println(e.getMessage());

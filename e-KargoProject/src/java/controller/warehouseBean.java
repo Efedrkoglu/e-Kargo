@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @SessionScoped
 public class warehouseBean extends baseController<warehouse, warehouseDAO> implements Serializable, IController<warehouse> {
     
-    warehouseBean() {
+    public warehouseBean() {
         
     }
     
@@ -41,13 +41,13 @@ public class warehouseBean extends baseController<warehouse, warehouseDAO> imple
     }
 
     @Override
-    public void insert(warehouse entity) {
+    public void insert() {
         super.getDao().insert(entity);
         super.setEntity(newEntity());
     }
 
     @Override
-    public void update(warehouse entity) {
+    public void update() {
         super.getDao().update(entity);
         super.setEntity(newEntity());
     }

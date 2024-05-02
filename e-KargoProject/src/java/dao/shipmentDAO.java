@@ -68,7 +68,7 @@ public class shipmentDAO extends DbConnection{
             LocalDate deliveredAt = deliveredAtFromDb.toLocalDate();
 
             customer c = this.getcDao().getById(rs.getInt("customer_id"));
-            location fromL = this.getlDao().getById(rs.getInt("from_locaiton_id"));
+            location fromL = this.getlDao().getById(rs.getInt("from_location_id"));
             location toL = this.getlDao().getById(rs.getInt("to_location_id"));
             packageStatus ps = this.getPsDao().getById(rs.getInt("package_status_id"));
             
@@ -132,7 +132,7 @@ public class shipmentDAO extends DbConnection{
                 LocalDate deliveredAt = deliveredAtFromDb.toLocalDate();
                 
                 customer c = this.getcDao().getById(rs.getInt("customer_id"));
-                location fromL = this.getlDao().getById(rs.getInt("from_locaiton_id"));
+                location fromL = this.getlDao().getById(rs.getInt("from_location_id"));
                 location toL = this.getlDao().getById(rs.getInt("to_location_id"));
                 packageStatus ps = this.getPsDao().getById(rs.getInt("package_status_id"));
                 

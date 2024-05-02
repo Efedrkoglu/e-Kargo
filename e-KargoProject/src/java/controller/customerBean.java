@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @SessionScoped
 public class customerBean extends baseController<customer, customerDAO> implements Serializable, IController<customer> {
       
-    customerBean() {
+    public customerBean() {
         
     }
 
@@ -41,19 +41,20 @@ public class customerBean extends baseController<customer, customerDAO> implemen
     }
 
     @Override
-    public void insert(customer entity) {
+    public void insert() {
         super.getDao().insert(entity);
         super.setEntity(newEntity());
     }
 
     @Override
-    public void update(customer entity) {
+    public void update() {
         super.getDao().update(entity);
         super.setEntity(newEntity());
     }
 
     @Override
     public void delete(customer entity) {
+        System.out.println("sa");
         super.getDao().delete(entity);
         super.setEntity(newEntity());
     }
