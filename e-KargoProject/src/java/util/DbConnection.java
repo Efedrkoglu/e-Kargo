@@ -10,16 +10,18 @@ import java.sql.*;
  */
 public abstract class DbConnection {
     
+    private Connection connection;
+    
     public Connection connect() {
-        Connection c = null;
+        if(this.connection == null) {
+            try {
+                Class.forName("org.postgresql.Driver");
+                this.connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/eKargoDB", "postgres", "passwd");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         
-        try {
-            Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/eKargoDB", "postgres", "passwd");
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return c;
+        return this.connection;
     }
 }
