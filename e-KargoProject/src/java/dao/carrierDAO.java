@@ -31,7 +31,7 @@ public class carrierDAO extends DbConnection{
     public void insert(carrier c){
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into carrier values(" + c.getCarrier_id() + ", " + c.getShipment().getShipment_id()
+            st.executeUpdate("insert into carrier values(default, " + c.getShipment().getShipment_id()
                             + ", '" + c.getPhone_number() + "', '" + c.getEmail() + "', '" + c.getName() + "')");
         }
         catch(Exception e) {

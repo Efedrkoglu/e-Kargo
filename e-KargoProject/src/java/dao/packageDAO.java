@@ -46,7 +46,7 @@ public class packageDAO extends DbConnection{
     public void insert(Package p) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into package values(" + p.getPackage_id() + ", " + p.getFromWarehouse().getWarehouse_id()
+            st.executeUpdate("insert into package values(default, " + p.getFromWarehouse().getWarehouse_id()
                             + ", " + p.getToWarehouse().getWarehouse_id() + ", " + p.getShipment().getShipment_id()
                             + ", '" + p.getContent() + "', " + p.getValue() + ", " + p.getWeight() + ")");
         }

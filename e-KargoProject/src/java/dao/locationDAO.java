@@ -33,7 +33,7 @@ public class locationDAO extends DbConnection{
     public void insert(location l) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into location values(" + l.getLocation_id()+ ", '" + l.getCity() + 
+            st.executeUpdate("insert into location values(default, '" + l.getCity() + 
                             "', '" + l.getCountry() + "')");
         }
         catch(Exception e) {

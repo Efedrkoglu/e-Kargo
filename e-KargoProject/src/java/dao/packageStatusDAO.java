@@ -35,7 +35,7 @@ public class packageStatusDAO extends DbConnection{
     public void insert(packageStatus ps) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into packageStatus values(" + ps.getStatus_id() + ", '" + ps.getDescription() + "')");
+            st.executeUpdate("insert into packageStatus values(default, '" + ps.getDescription() + "')");
         }
         catch(Exception e) {
             System.out.println(e.getMessage());

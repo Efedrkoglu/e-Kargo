@@ -31,7 +31,7 @@ public class employeeDAO extends DbConnection{
     public void insert(employee e) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into employee values(" + e.getEmployee_id() + ", " + e.getWarehouse().getWarehouse_id()
+            st.executeUpdate("insert into employee values(default, " + e.getWarehouse().getWarehouse_id()
                             + ", '" + e.getPhone_number() + "', '" + e.getEmail() + "', '" + e.getName() + "')");
         }
         catch(Exception ex) {

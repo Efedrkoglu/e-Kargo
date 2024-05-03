@@ -84,7 +84,7 @@ public class shipmentDAO extends DbConnection{
     public void insert(shipment s) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into shipment values(" + s.getShipment_id() + ", '" + s.getEstimated_delivery() + "', '"
+            st.executeUpdate("insert into shipment values(default, '" + s.getEstimated_delivery() + "', '"
                             + s.getDelivered_at() + "', " + s.getCustomer().getCustomer_id() + ", " + s.getFromLocation().getLocation_id()
                             + ", " + s.getToLocation().getLocation_id() + ", " + s.getPackageStatus().getStatus_id() + ", '"
                             + s.getTrackingNumber() + "')");

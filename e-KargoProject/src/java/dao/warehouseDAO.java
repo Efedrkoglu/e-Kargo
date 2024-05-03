@@ -50,7 +50,7 @@ public class warehouseDAO extends DbConnection{
     public void insert(warehouse w) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into warehouse values(" + w.getWarehouse_id() + ", " + 
+            st.executeUpdate("insert into warehouse values(default, " + 
                     w.getLocation().getLocation_id() + ")");
         }
         catch(Exception e) {

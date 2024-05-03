@@ -34,7 +34,7 @@ public class customerDAO extends DbConnection{
     public void insert(customer c) {
         try {
             Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into customer values(" + c.getCustomer_id() + ", '" + c.getPhone_number()
+            st.executeUpdate("insert into customer values(default, '" + c.getPhone_number()
                             + "', '" + c.getEmail() + "', '" + c.getName() + "')");
         }
         catch(Exception e) {
