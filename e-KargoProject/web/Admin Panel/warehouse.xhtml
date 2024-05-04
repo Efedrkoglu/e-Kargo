@@ -13,15 +13,9 @@
                 <h:selectOneMenu value="#{warehouseBean.entity.location}" converter="locationConverter">
                     <f:selectItems value="#{locationBean.select()}" var="l" itemValue="#{l}" itemLabel="#{l.city}"/>
                 </h:selectOneMenu>
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{controlBean.update == 0}" action="#{warehouseBean.insert()}" value="insert"/>
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{controlBean.update != 0}" value="update">
-                    <f:actionListener binding="#{warehouseBean.update()}"/>
-                    <f:actionListener binding="#{controlBean.setUpdate(0)}"/>
-                </h:commandButton>
-                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{controlBean.update != 0}" value="clear form">
-                    <f:actionListener binding="#{warehouseBean.setEntity(warehouseBean.setEntity(warehouseBean.newEntity()))}"/>
-                    <f:actionListener binding="#{controlBean.setUpdate(0)}"/>
-                </h:commandButton>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{warehouseBean.entity.warehouse_id == 0}" action="#{warehouseBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{warehouseBean.entity.warehouse_id != 0}" action="#{warehouseBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{warehouseBean.entity.warehouse_id != 0}" action="#{warehouseBean.setEntity(warehouseBean.setEntity(warehouseBean.newEntity()))}" value="Clear"/>
             </h:form>
             <hr/>
             <h:form>
@@ -35,11 +29,8 @@
                     #{w.location.getCity()}
                     </h:column>
                     <h:column>
-                        <h:commandButton styleClass="btn btn-primary btn-sm" value="update">
-                            <f:actionListener binding="#{warehouseBean.setEntity(w)}"/>
-                            <f:actionListener binding="#{controlBean.setUpdate(1)}"/>
-                        </h:commandButton>
-                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{warehouseBean.delete(w)}" value="delete"/>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{warehouseBean.setEntity(w)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{warehouseBean.delete(w)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>
             </h:form>

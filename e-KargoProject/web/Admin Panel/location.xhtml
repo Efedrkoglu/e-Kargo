@@ -11,15 +11,9 @@
             <h:form>
                 City: <h:inputText value="#{locationBean.entity.city}"/>
                 Country: <h:inputText value="#{locationBean.entity.country}"/>
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{controlBean.update == 0}" action="#{locationBean.insert()}" value="insert"/>
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{controlBean.update != 0}" value="update">
-                    <f:actionListener binding="#{locationBean.update()}"/>
-                    <f:actionListener binding="#{controlBean.setUpdate(0)}"/>
-                </h:commandButton>
-                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{controlBean.update != 0}" value="clear from">
-                    <f:actionListener binding="#{locationBean.setEntity(locationBean.newEntity())}"/>
-                    <f:actionListener binding="#{controlBean.setUpdate(0)}"/>
-                </h:commandButton>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{locationBean.entity.location_id == 0}" action="#{locationBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{locationBean.entity.location_id!= 0}" action="#{locationBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{locationBean.entity.location_id != 0}" action="#{locationBean.setEntity(locationBean.newEntity())}" value="Clear"/>
             </h:form>
 
 
@@ -38,11 +32,8 @@
                     #{l.country}
                     </h:column>
                     <h:column>
-                        <h:commandButton styleClass="btn btn-primary btn-sm" value="update">
-                            <f:actionListener binding="#{locationBean.setEntity(l)}"/>
-                            <f:actionListener binding="#{controlBean.setUpdate(1)}"/>
-                        </h:commandButton>
-                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{locationBean.delete(l)}" value="delete"/>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{locationBean.setEntity(l)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{locationBean.delete(l)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>
             </h:form>

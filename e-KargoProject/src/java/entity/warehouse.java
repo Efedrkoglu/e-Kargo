@@ -41,6 +41,28 @@ public class warehouse {
     public String toString() {
         return "warehouse{" + "warehouse_id=" + warehouse_id + ", location_id=" + location.getLocation_id() + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 41 * hash + this.warehouse_id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final warehouse other = (warehouse) obj;
+        return this.warehouse_id == other.warehouse_id;
+    }
     
     
 }

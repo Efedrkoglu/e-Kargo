@@ -4,8 +4,8 @@
  */
 package converter;
 
-import dao.locationDAO;
-import entity.location;
+import dao.warehouseDAO;
+import entity.warehouse;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -16,34 +16,33 @@ import jakarta.faces.convert.FacesConverter;
  * @author Efe
  */
 
-@FacesConverter("locationConverter")
-public class locationConverter implements Converter{
+@FacesConverter("warehouseConverter")
+public class warehouseConverter implements Converter{
     
-    private locationDAO locationDAO;
+    private warehouseDAO warehouseDAO;
 
-    public locationDAO getLocationDAO() {
-        if(this.locationDAO == null) {
-            this.locationDAO = new locationDAO();
+    public warehouseDAO getWarehouseDAO() {
+        if(this.warehouseDAO == null) {
+            this.warehouseDAO = new warehouseDAO();
         }
-        return locationDAO;
+        return warehouseDAO;
     }
 
-    public void setLocationDAO(locationDAO locationDAO) {
-        this.locationDAO = locationDAO;
+    public void setWarehouseDAO(warehouseDAO warehouseDAO) {
+        this.warehouseDAO = warehouseDAO;
     }
-    
+
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
-        System.out.println(string);
         int id = Integer.valueOf(string);
-        location l = this.getLocationDAO().getById(id);
-        return l;
+        warehouse w = this.getWarehouseDAO().getById(id);
+        return w;
     }
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object t) {
-        location l = (location)t;
-        return String.valueOf(l.getLocation_id());
+        warehouse w = (warehouse)t;
+        return String.valueOf(w.getWarehouse_id());
     }
     
 }
