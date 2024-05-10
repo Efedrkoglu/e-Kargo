@@ -61,6 +61,7 @@ public class shipmentDAO extends DbConnection{
         try {
             Statement st = super.connect().createStatement();
             ResultSet rs = st.executeQuery("select * from shipment where shipment_id=" + id);
+            rs.next();
             
             Date estimatedDeliveryFromDb = rs.getDate("estimated_delivery");
             Date deliveredAtFromDb = rs.getDate("delivered_at");

@@ -6,5 +6,52 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       template="/template.xhtml">
     
-    
+    <ui:define name="content">
+        <div class="container mt-5">
+            <h:form>
+                Warehouse:
+                <h:selectOneMenu value="#{employeeBean.entity.warehouse}" converter="warehouseConverter">
+                    <f:selectItems value="#{warehouseBean.select()}" var="w" itemValue="#{w}" itemLabel="#{w.warehouse_id}"/>
+                </h:selectOneMenu>
+                Phone Number: <h:inputText value="#{employeeBean.entity.phone_number}"/>
+                Email: <h:inputText value="#{employeeBean.entity.email}"/>
+                Name: <h:inputText value="#{employeeBean.entity.name}"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{employeeBean.entity.employee_id == 0}" action="#{employeeBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{employeeBean.entity.employee_id != 0}" action="#{employeeBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{employeeBean.entity.employee_id != 0}" action="#{employeeBean.setEntity(employeeBean.newEntity())}" value="Clear"/>
+            </h:form>
+            <h:form>
+                <h:dataTable styleClass="table table-striped table-hover" value="#{employeeBean.select()}" var="e">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{e.employee_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Warehouse</f:facet>
+                        #{e.warehouse.warehouse_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Warehouse Location</f:facet>
+                        #{e.warehouse.location.city}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Phone Number</f:facet>
+                        #{e.phone_number}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Email</f:facet>
+                        #{e.email}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        #{e.name}
+                    </h:column>
+                    <h:column>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{employeeBean.setEntity(e)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{employeeBean.delete(e)}" value="Delete"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
 </ui:composition>

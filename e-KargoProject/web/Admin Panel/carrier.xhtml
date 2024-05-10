@@ -6,5 +6,48 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       template="/template.xhtml">
     
-    
+    <ui:define name="content">
+        <div class="container mt-5">
+            <h:form>
+                Carrying Shipment:
+                <h:selectOneMenu value="#{carrierBean.entity.shipment}" converter="shipmentConverter">
+                    <f:selectItems value="#{shipmentBean.select()}" var="s" itemValue="#{s}" itemLabel="#{s.shipment_id}"/>
+                </h:selectOneMenu>
+                Phone Number: <h:inputText value="#{carrierBean.entity.phone_number}"/>
+                Email: <h:inputText value="#{carrierBean.entity.email}"/>
+                Name: <h:inputText value="#{carrierBean.entity.name}"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{carrierBean.entity.carrier_id == 0}" action="#{carrierBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{carrierBean.entity.carrier_id != 0}" action="#{carrierBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{carrierBean.entity.carrier_id != 0}" action="#{carrierBean.setEntity(carrierBean.newEntity())}" value="Clear"/>
+            </h:form>
+            <h:form>
+                <h:dataTable styleClass="table table-striped table-hover" value="#{carrierBean.select()}" var="c">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{c.carrier_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Carrying Shipment</f:facet>
+                        #{c.shipment.shipment_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Phone Number</f:facet>
+                        #{c.phone_number}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Email</f:facet>
+                        #{c.email}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        #{c.name}
+                    </h:column>
+                    <h:column>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{carrierBean.setEntity(c)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{carrierBean.delete(c)}" value="Delete"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
 </ui:composition>

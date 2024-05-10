@@ -5,6 +5,7 @@
 package entity;
 
 import java.time.LocalDate;
+import java.time.Month;
 
 /**
  *
@@ -44,20 +45,26 @@ public class shipment {
         this.shipment_id = shipment_id;
     }
 
-    public LocalDate getEstimated_delivery() {
-        return estimated_delivery;
+    public String getEstimated_delivery() {
+        if(this.estimated_delivery == null) {
+            this.estimated_delivery = LocalDate.of(1,1,1);
+        }
+        return estimated_delivery.toString();
     }
 
-    public void setEstimated_delivery(LocalDate estimated_delivery) {
-        this.estimated_delivery = estimated_delivery;
+    public void setEstimated_delivery(String estimated_delivery) {
+        this.estimated_delivery = LocalDate.parse(estimated_delivery);
     }
 
-    public LocalDate getDelivered_at() {
-        return delivered_at;
+    public String getDelivered_at() {
+        if(this.delivered_at == null) {
+            this.delivered_at = LocalDate.of(1,1,1);
+        }
+        return delivered_at.toString();
     }
 
-    public void setDelivered_at(LocalDate delivered_at) {
-        this.delivered_at = delivered_at;
+    public void setDelivered_at(String delivered_at) {
+        this.delivered_at = LocalDate.parse(delivered_at);
     }
 
     public customer getCustomer() {
@@ -104,6 +111,26 @@ public class shipment {
     public String toString() {
         return "shipment{" + "shipment_id=" + shipment_id + ", estimated_delivery=" + estimated_delivery + ", delivered_at=" + delivered_at + ", customer_id=" + customer.getCustomer_id() + ", fromLocation_id=" + fromLocation.getLocation_id() + ", toLocation_id=" + toLocation.getLocation_id() + ", packageStatus_id=" + packageStatus.getStatus_id() + ", trackingNumber=" + trackingNumber + '}';
     }
-    
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + this.shipment_id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final shipment other = (shipment) obj;
+        return this.shipment_id == other.shipment_id;
+    }
 }

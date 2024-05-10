@@ -6,5 +6,78 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       template="/template.xhtml">
     
-    
+    <ui:define name="content">
+        <div class="container mt-5">
+            <h:form>
+                Estimated Delivery: <h:inputText value="#{shipmentBean.entity.estimated_delivery}"/>
+                Delivered At: <h:inputText value="#{shipmentBean.entity.delivered_at}"/>
+                Customer:
+                <h:selectOneMenu value="#{shipmentBean.entity.customer}" converter="customerConverter">
+                    <f:selectItems value="#{customerBean.select()}" var="c" itemValue="#{c}" itemLabel="#{c.customer_id}, #{c.name}"/>
+                </h:selectOneMenu><br/>
+                From Location:
+                <h:selectOneMenu value="#{shipmentBean.entity.fromLocation}" converter="locationConverter">
+                    <f:selectItems value="#{locationBean.select()}" var="l" itemValue="#{l}" itemLabel="#{l.city}, #{l.country}"/>
+                </h:selectOneMenu>
+                To Location:
+                <h:selectOneMenu value="#{shipmentBean.entity.toLocation}" converter="locationConverter">
+                    <f:selectItems value="#{locationBean.select()}" var="l" itemValue="#{l}" itemLabel="#{l.city}, #{l.country}"/>
+                </h:selectOneMenu><br/>
+                Package Status:
+                <h:selectOneMenu value="#{shipmentBean.entity.packageStatus}" converter="packageStatusConverter">
+                    <f:selectItems value="#{packageStatusBean.select()}" var="ps" itemValue="#{ps}" itemLabel="#{ps.description}"/>
+                </h:selectOneMenu>
+                Tracking Number: <h:inputText value="#{shipmentBean.entity.trackingNumber}"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.entity.shipment_id == 0}" action="#{shipmentBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.entity.shipment_id != 0}" action="#{shipmentBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{shipmentBean.entity.shipment_id != 0}" action="#{shipmentBean.setEntity(shipmentBean.newEntity())}" value="Clear"/>
+            </h:form>
+            <h:form>
+                <h:dataTable styleClass="table table-striped table-hover" value="#{shipmentBean.select()}" var="s">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{s.shipment_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Estimated Delivery</f:facet>
+                        #{s.estimated_delivery}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Delivered At</f:facet>
+                        #{s.delivered_at}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Customer ID</f:facet>
+                        #{s.customer.customer_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Customer Name</f:facet>
+                        #{s.customer.name}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">From Location</f:facet>
+                        #{s.fromLocation.city},
+                        #{s.fromLocation.country}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">To Location</f:facet>
+                        #{s.toLocation.city},
+                        #{s.toLocation.country}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Package Status</f:facet>
+                        #{s.packageStatus.description}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Tracking Number</f:facet>
+                        #{s.trackingNumber}
+                    </h:column>
+                    <h:column>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{shipmentBean.setEntity(s)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{shipmentBean.delete(s)}" value="Delete"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
 </ui:composition>

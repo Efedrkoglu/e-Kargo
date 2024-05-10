@@ -36,6 +36,26 @@ public class packageStatus {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 41 * hash + this.status_id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final packageStatus other = (packageStatus) obj;
+        return this.status_id == other.status_id;
+    }
 }

@@ -11,7 +11,7 @@
             <h:form>
                 Location: 
                 <h:selectOneMenu value="#{warehouseBean.entity.location}" converter="locationConverter">
-                    <f:selectItems value="#{locationBean.select()}" var="l" itemValue="#{l}" itemLabel="#{l.city}"/>
+                    <f:selectItems value="#{locationBean.select()}" var="l" itemValue="#{l}" itemLabel="#{l.city}, #{l.country}"/>
                 </h:selectOneMenu>
                 <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{warehouseBean.entity.warehouse_id == 0}" action="#{warehouseBean.insert()}" value="Insert"/>
                 <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{warehouseBean.entity.warehouse_id != 0}" action="#{warehouseBean.update()}" value="Update"/>
@@ -25,8 +25,12 @@
                     #{w.warehouse_id}
                     </h:column>
                     <h:column>
-                        <f:facet name="header">Location</f:facet>
-                    #{w.location.getCity()}
+                        <f:facet name="header">City</f:facet>
+                    #{w.location.city}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Country</f:facet>
+                    #{w.location.country}
                     </h:column>
                     <h:column>
                         <h:commandButton styleClass="btn btn-primary btn-sm" action="#{warehouseBean.setEntity(w)}" value="Update"/>

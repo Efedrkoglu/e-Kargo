@@ -6,5 +6,64 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       template="/template.xhtml">
     
-    
+    <ui:define name="content">
+        <div class="container mt-5">
+            <h:form>
+                From Warehouse:
+                <h:selectOneMenu value="#{packageBean.entity.fromWarehouse}" converter="warehouseConverter">
+                    <f:selectItems value="#{warehouseBean.select()}" var="w" itemValue="#{w}" itemLabel="#{w.warehouse_id}"/>
+                </h:selectOneMenu>
+                To Warehouse:
+                <h:selectOneMenu value="#{packageBean.entity.toWarehouse}" converter="warehouseConverter">
+                    <f:selectItems value="#{warehouseBean.select()}" var="w" itemValue="#{w}" itemLabel="#{w.warehouse_id}"/>
+                </h:selectOneMenu>
+                Shipment:
+                <h:selectOneMenu value="#{packageBean.entity.shipment}" converter="shipmentConverter">
+                    <f:selectItems value="#{shipmentBean.select()}" var="s" itemValue="#{s}" itemLabel="#{s.shipment_id}"/>
+                </h:selectOneMenu>
+                Value: <h:inputText value="#{packageBean.entity.value}"/>
+                Weight: <h:inputText value="#{packageBean.entity.weight}"/><br/>
+                Content:<br/> <h:inputTextarea rows="5" cols="50" value="#{packageBean.entity.content}"/><br/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{packageBean.entity.package_id == 0}" action="#{packageBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{packageBean.entity.package_id != 0}" action="#{packageBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{packageBean.entity.package_id != 0}" action="#{packageBean.setEntity(packageBean.newEntity())}" value="Clear"/>
+            </h:form>
+            <h:form>
+                <h:dataTable styleClass="table table-striped table-hover" value="#{packageBean.select()}" var="p">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{p.package_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">From Warehouse</f:facet>
+                        #{p.fromWarehouse.warehouse_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">To Warehouse</f:facet>
+                        #{p.toWarehouse.warehouse_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Shipment</f:facet>
+                        #{p.shipment.shipment_id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Content</f:facet>
+                        #{p.content}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Value</f:facet>
+                        #{p.value}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Weight</f:facet>
+                        #{p.weight}
+                    </h:column>
+                    <h:column>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{packageBean.setEntity(p)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{packageBean.delete(p)}" value="Delete"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
 </ui:composition>
