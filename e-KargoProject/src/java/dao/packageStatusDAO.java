@@ -81,4 +81,40 @@ public class packageStatusDAO extends DbConnection{
         return list;
     }
     
+    public int maxPage() {
+        int maxPage = 1;
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select count(status_id) as c from packageStatus");
+            rs.next();
+            int count = rs.getInt("c");
+            maxPage = (int)Math.ceil((double)count / (double)10);
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        if(maxPage == 0)
+            maxPage = 1;
+        
+        return maxPage;
+    }
+    
+    public ArrayList<packageStatus> getPage(int page) {
+        ArrayList<packageStatus> list = new ArrayList<>();
+        
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select * from packageStatus order by status_id offset " + ((page - 1) * 10) + " limit 10");
+            
+            while(rs.next()) {
+                list.add(new packageStatus(rs.getInt("status_id"), rs.getString("description")));
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return list;
+    }
 }

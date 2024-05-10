@@ -16,7 +16,7 @@
             </h:form>
             
             <h:form>
-                <h:dataTable styleClass="table table-striped table-hover" value="#{packageStatusBean.select()}" var="ps">
+                <h:dataTable styleClass="table table-striped table-hover" value="#{packageStatusBean.page()}" var="ps">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
                         #{ps.status_id}
@@ -30,6 +30,8 @@
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{packageStatusBean.delete(ps)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{packageStatusBean.page != 1}" action="#{packageStatusBean.setPage(packageStatusBean.page - 1)}" value="&larr;"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{packageStatusBean.page != packageStatusBean.dao.maxPage()}" action="#{packageStatusBean.setPage(packageStatusBean.page + 1)}" value="&rarr;"/>
             </h:form>
         </div>
     </ui:define>

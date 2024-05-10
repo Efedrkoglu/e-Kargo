@@ -19,7 +19,7 @@
             </h:form>
             <hr/>
             <h:form>
-                <h:dataTable styleClass="table table-striped table-hover" value="#{customerBean.select()}" var="c">
+                <h:dataTable styleClass="table table-striped table-hover" value="#{customerBean.page()}" var="c">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
                     #{c.customer_id}
@@ -41,6 +41,8 @@
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{customerBean.delete(c)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{customerBean.page != 1}" action="#{customerBean.setPage(customerBean.page - 1)}" value="&larr;"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{customerBean.page != customerBean.dao.maxPage()}" action="#{customerBean.setPage(customerBean.page + 1)}" value="&rarr;"/>
             </h:form>
         </div>
     </ui:define>

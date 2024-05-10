@@ -33,7 +33,7 @@
                 <h:commandButton styleClass="btn btn-secondary" rendered="#{shipmentBean.entity.shipment_id != 0}" action="#{shipmentBean.setEntity(shipmentBean.newEntity())}" value="Clear"/>
             </h:form>
             <h:form>
-                <h:dataTable styleClass="table table-striped table-hover" value="#{shipmentBean.select()}" var="s">
+                <h:dataTable styleClass="table table-striped table-hover" value="#{shipmentBean.page()}" var="s">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
                         #{s.shipment_id}
@@ -77,6 +77,8 @@
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{shipmentBean.delete(s)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{shipmentBean.page != 1}" action="#{shipmentBean.setPage(shipmentBean.page - 1)}" value="&larr;"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.page != shipmentBean.dao.maxPage()}" action="#{shipmentBean.setPage(shipmentBean.page + 1)}" value="&rarr;"/>
             </h:form>
         </div>
     </ui:define>

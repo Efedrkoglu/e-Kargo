@@ -20,6 +20,8 @@ import java.util.ArrayList;
 @SessionScoped
 public class packageBean extends baseController<Package, packageDAO> implements Serializable, IController<Package> {
     
+    private int page;
+    
     public packageBean() {
         
     }
@@ -56,5 +58,25 @@ public class packageBean extends baseController<Package, packageDAO> implements 
     public void delete(Package entity) {
         super.getDao().delete(entity);
         super.setEntity(newEntity());
+    }
+    
+    public ArrayList<Package> page() {
+        return super.getDao().getPage(this.getPage());
+    }
+    
+    public int getPage() {
+        if(this.page == 0)
+            this.page = 1;
+        
+        return this.page;
+    }
+    
+    public void setPage(int page) {
+        if(page <= 0)
+            page = 1;
+        else if(page > this.getDao().maxPage())
+            page = this.getDao().maxPage();
+        
+        this.page = page;
     }
 }

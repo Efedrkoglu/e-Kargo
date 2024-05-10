@@ -19,6 +19,8 @@ import java.util.ArrayList;
 @SessionScoped
 public class locationBean extends baseController<location, locationDAO> implements Serializable, IController<location> {
 
+    private int page;
+    
     public locationBean() {
         
     }
@@ -57,4 +59,23 @@ public class locationBean extends baseController<location, locationDAO> implemen
         super.setEntity(newEntity());
     }
     
+    public ArrayList<location> page() {
+        return super.getDao().getPage(this.getPage());
+    }
+    
+    public int getPage() {
+        if(this.page == 0)
+            this.page = 1;
+        
+        return this.page;
+    }
+    
+    public void setPage(int page) {
+        if(page <= 0)
+            page = 1;
+        else if(page > this.getDao().maxPage())
+            page = this.getDao().maxPage();
+        
+        this.page = page;
+    }
 }

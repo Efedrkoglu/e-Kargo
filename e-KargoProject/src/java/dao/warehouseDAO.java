@@ -97,4 +97,42 @@ public class warehouseDAO extends DbConnection{
         
         return list;
     }
+    
+    public int maxPage() {
+        int maxPage = 1;
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select count(warehouse_id) as c from warehouse");
+            rs.next();
+            int count = rs.getInt("c");
+            maxPage = (int)Math.ceil((double)count / (double)10);
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        if(maxPage == 0)
+            maxPage = 1;
+        
+        return maxPage;
+    }
+    
+    public ArrayList<warehouse> getPage(int page) {
+        ArrayList<warehouse> list = new ArrayList<>();
+        
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select * from warehouse order by warehouse_id offset " + ((page - 1) * 10) + " limit 10");
+            
+            while(rs.next()) {
+                location l = this.getlDao().getById(rs.getInt("location_id"));
+                list.add(new warehouse(rs.getInt("warehouse_id"), l));
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return list;
+    }
 }

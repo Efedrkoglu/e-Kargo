@@ -20,6 +20,8 @@ import java.util.ArrayList;
 @SessionScoped
 public class customerBean extends baseController<customer, customerDAO> implements Serializable, IController<customer> {
       
+    private int page;
+    
     public customerBean() {
         
     }
@@ -59,5 +61,23 @@ public class customerBean extends baseController<customer, customerDAO> implemen
         super.setEntity(newEntity());
     }
 
+    public ArrayList<customer> page() {
+        return super.getDao().getPage(this.getPage());
+    }
     
+    public int getPage() {
+        if(this.page == 0)
+            this.page = 1;
+        
+        return this.page;
+    }
+    
+    public void setPage(int page) {
+        if(page <= 0)
+            page = 1;
+        else if(page > this.getDao().maxPage())
+            page = this.getDao().maxPage();
+        
+        this.page = page;
+    }
 }

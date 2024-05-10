@@ -19,6 +19,8 @@ import java.util.ArrayList;
 @SessionScoped
 public class employeeBean extends baseController<employee, employeeDAO> implements Serializable, IController<employee> {
     
+    private int page;
+    
     public employeeBean() {
         
     }
@@ -55,5 +57,25 @@ public class employeeBean extends baseController<employee, employeeDAO> implemen
     public void delete(employee entity) {
         super.getDao().delete(entity);
         super.setEntity(newEntity());
+    }
+    
+    public ArrayList<employee> page() {
+        return super.getDao().getPage(this.getPage());
+    }
+    
+    public int getPage() {
+        if(this.page == 0)
+            this.page = 1;
+        
+        return this.page;
+    }
+    
+    public void setPage(int page) {
+        if(page <= 0)
+            page = 1;
+        else if(page > this.getDao().maxPage())
+            page = this.getDao().maxPage();
+        
+        this.page = page;
     }
 }

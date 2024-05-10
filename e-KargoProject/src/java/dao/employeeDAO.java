@@ -80,4 +80,41 @@ public class employeeDAO extends DbConnection{
         return list;
     }
     
+    public int maxPage() {
+        int maxPage = 1;
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select count(employee_id) as c from employee");
+            rs.next();
+            int count = rs.getInt("c");
+            maxPage = (int)Math.ceil((double)count / (double)10);
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        if(maxPage == 0)
+            maxPage = 1;
+        
+        return maxPage;
+    }
+    
+    public ArrayList<employee> getPage(int page) {
+        ArrayList<employee> list = new ArrayList<>();
+        
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select * from employee order by employee_id offset " + ((page - 1) * 10) + " limit 10");
+            
+            while(rs.next()) {
+                warehouse w = this.getwDao().getById(rs.getInt("warehouse_id"));
+                list.add(new employee(rs.getInt("employee_id"), w, rs.getString("phone_number"), rs.getString("email"), rs.getString("name")));
+            }
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        return list;
+    }
 }

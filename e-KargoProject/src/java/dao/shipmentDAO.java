@@ -146,4 +146,51 @@ public class shipmentDAO extends DbConnection{
         
         return list;
     }
+    
+    public int maxPage() {
+        int maxPage = 1;
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select count(shipment_id) as c from shipment");
+            rs.next();
+            int count = rs.getInt("c");
+            maxPage = (int)Math.ceil((double)count / (double)10);
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        if(maxPage == 0)
+            maxPage = 1;
+        
+        return maxPage;
+    }
+    
+    public ArrayList<shipment> getPage(int page) {
+        ArrayList<shipment> list = new ArrayList<>();
+        
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select * from shipment order by shipment_id offset " + ((page - 1) * 10) + " limit 10");
+            
+            while(rs.next()) {
+                Date estimatedDeliveryFromDb = rs.getDate("estimated_delivery");
+                Date deliveredAtFromDb = rs.getDate("delivered_at");
+                LocalDate estimatedDelivery = estimatedDeliveryFromDb.toLocalDate();
+                LocalDate deliveredAt = deliveredAtFromDb.toLocalDate();
+                
+                customer c = this.getcDao().getById(rs.getInt("customer_id"));
+                location fromL = this.getlDao().getById(rs.getInt("from_location_id"));
+                location toL = this.getlDao().getById(rs.getInt("to_location_id"));
+                packageStatus ps = this.getPsDao().getById(rs.getInt("package_status_id"));
+                
+                list.add(new shipment(rs.getInt("shipment_id"), estimatedDelivery, deliveredAt, c, fromL, toL, ps, rs.getString("tracking_number")));
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return list;
+    }
 }

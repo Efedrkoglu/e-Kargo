@@ -21,7 +21,7 @@
                 <h:commandButton styleClass="btn btn-secondary" rendered="#{carrierBean.entity.carrier_id != 0}" action="#{carrierBean.setEntity(carrierBean.newEntity())}" value="Clear"/>
             </h:form>
             <h:form>
-                <h:dataTable styleClass="table table-striped table-hover" value="#{carrierBean.select()}" var="c">
+                <h:dataTable styleClass="table table-striped table-hover" value="#{carrierBean.page()}" var="c">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
                         #{c.carrier_id}
@@ -47,6 +47,8 @@
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{carrierBean.delete(c)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{carrierBean.page != 1}" action="#{carrierBean.setPage(carrierBean.page - 1)}" value="&larr;"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{carrierBean.page != carrierBean.dao.maxPage()}" action="#{carrierBean.setPage(carrierBean.page + 1)}" value="&rarr;"/>
             </h:form>
         </div>
     </ui:define>

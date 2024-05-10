@@ -29,7 +29,7 @@
                 <h:commandButton styleClass="btn btn-secondary" rendered="#{packageBean.entity.package_id != 0}" action="#{packageBean.setEntity(packageBean.newEntity())}" value="Clear"/>
             </h:form>
             <h:form>
-                <h:dataTable styleClass="table table-striped table-hover" value="#{packageBean.select()}" var="p">
+                <h:dataTable styleClass="table table-striped table-hover" value="#{packageBean.page()}" var="p">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
                         #{p.package_id}
@@ -63,6 +63,8 @@
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{packageBean.delete(p)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{packageBean.page != 1}" action="#{packageBean.setPage(packageBean.page - 1)}" value="&larr;"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{packageBean.page != packageBean.dao.maxPage()}" action="#{packageBean.setPage(packageBean.page + 1)}" value="&rarr;"/>
             </h:form>
         </div>
     </ui:define>

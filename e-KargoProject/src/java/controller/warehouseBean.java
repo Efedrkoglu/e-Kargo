@@ -20,6 +20,8 @@ import java.util.ArrayList;
 @SessionScoped
 public class warehouseBean extends baseController<warehouse, warehouseDAO> implements Serializable, IController<warehouse> {
     
+    private int page;
+    
     public warehouseBean() {
         
     }
@@ -58,4 +60,23 @@ public class warehouseBean extends baseController<warehouse, warehouseDAO> imple
         super.setEntity(newEntity());
     }
     
+    public ArrayList<warehouse> page() {
+        return super.getDao().getPage(this.getPage());
+    }
+    
+    public int getPage() {
+        if(this.page == 0)
+            this.page = 1;
+        
+        return this.page;
+    }
+    
+    public void setPage(int page) {
+        if(page <= 0)
+            page = 1;
+        else if(page > this.getDao().maxPage())
+            page = this.getDao().maxPage();
+        
+        this.page = page;
+    }
 }
