@@ -4,12 +4,26 @@
  */
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.io.Serializable;
+
 /**
  *
  * @author Efe
  */
-public class customer {
-    private int customer_id;
+
+@Entity
+@Table(name = "customer")
+public class customer implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
     private String phone_number;
     private String email;
     private String name;
@@ -18,19 +32,19 @@ public class customer {
         
     }
 
-    public customer(int customer_id, String phone_number, String email, String name) {
-        this.customer_id = customer_id;
+    public customer(int id, String phone_number, String email, String name) {
+        this.id = id;
         this.phone_number = phone_number;
         this.email = email;
         this.name = name;
     }
 
-    public int getCustomer_id() {
-        return customer_id;
+    public int getId() {
+        return id;
     }
 
-    public void setCustomer_id(int customer_id) {
-        this.customer_id = customer_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPhone_number() {
@@ -59,8 +73,8 @@ public class customer {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + this.customer_id;
+        int hash = 7;
+        hash = 29 * hash + this.id;
         return hash;
     }
 
@@ -76,6 +90,7 @@ public class customer {
             return false;
         }
         final customer other = (customer) obj;
-        return this.customer_id == other.customer_id;
+        return this.id == other.id;
     }
+    
 }

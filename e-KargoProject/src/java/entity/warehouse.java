@@ -4,29 +4,46 @@
  */
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.io.Serializable;
+
 /**
  *
  * @author Efe
  */
-public class warehouse {
-    private int warehouse_id;
+@Entity
+@Table(name = "warehouse")
+public class warehouse implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
+    @ManyToOne
+    @JoinColumn(name = "location_id", referencedColumnName = "ID")
     private location location;
     
     public warehouse() {
         
     }
 
-    public warehouse(int warehouse_id, location location) {
-        this.warehouse_id = warehouse_id;
+    public warehouse(int id, location location) {
+        this.id = id;
         this.location = location;
     }
 
-    public int getWarehouse_id() {
-        return warehouse_id;
+    public int getId() {
+        return id;
     }
 
-    public void setWarehouse_id(int warehouse_id) {
-        this.warehouse_id = warehouse_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public location getLocation() {
@@ -38,14 +55,9 @@ public class warehouse {
     }
 
     @Override
-    public String toString() {
-        return "warehouse{" + "warehouse_id=" + warehouse_id + ", location_id=" + location.getLocation_id() + '}';
-    }
-
-    @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 41 * hash + this.warehouse_id;
+        int hash = 3;
+        hash = 71 * hash + this.id;
         return hash;
     }
 
@@ -61,8 +73,7 @@ public class warehouse {
             return false;
         }
         final warehouse other = (warehouse) obj;
-        return this.warehouse_id == other.warehouse_id;
+        return this.id == other.id;
     }
-    
     
 }

@@ -43,7 +43,7 @@ public class locationConverter implements Converter{
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object t) {
         location l = (location)t;
-        return String.valueOf(l.getLocation_id());
+        return String.valueOf(l.getId());
     }
     
 }

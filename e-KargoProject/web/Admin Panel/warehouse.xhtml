@@ -13,16 +13,16 @@
                 <h:selectOneMenu value="#{warehouseBean.entity.location}" converter="locationConverter">
                     <f:selectItems value="#{locationBean.select()}" var="l" itemValue="#{l}" itemLabel="#{l.city}, #{l.country}"/>
                 </h:selectOneMenu>
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{warehouseBean.entity.warehouse_id == 0}" action="#{warehouseBean.insert()}" value="Insert"/>
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{warehouseBean.entity.warehouse_id != 0}" action="#{warehouseBean.update()}" value="Update"/>
-                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{warehouseBean.entity.warehouse_id != 0}" action="#{warehouseBean.setEntity(warehouseBean.setEntity(warehouseBean.newEntity()))}" value="Clear"/>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{warehouseBean.formKontrol == 0}" action="#{warehouseBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{warehouseBean.formKontrol != 0}" action="#{warehouseBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{warehouseBean.formKontrol != 0}" action="#{warehouseBean.clearForm()}" value="Clear"/>
             </h:form>
             <hr/>
             <h:form>
                 <h:dataTable styleClass="table table-striped table-hover" value="#{warehouseBean.page()}" var="w">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
-                    #{w.warehouse_id}
+                    #{w.id}
                     </h:column>
                     <h:column>
                         <f:facet name="header">City</f:facet>
@@ -33,7 +33,7 @@
                     #{w.location.country}
                     </h:column>
                     <h:column>
-                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{warehouseBean.setEntity(w)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{warehouseBean.setForm(w)}" value="Update"/>
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{warehouseBean.delete(w)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>

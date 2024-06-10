@@ -4,12 +4,26 @@
  */
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.io.Serializable;
+
 /**
  *
  * @author Efe
  */
-public class location {
-    private int location_id;
+
+@Entity
+@Table(name = "location")
+public class location implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
     private String city;
     private String country;
     
@@ -17,18 +31,18 @@ public class location {
         
     }
 
-    public location(int location_id, String city, String country) {
-        this.location_id = location_id;
+    public location(int id, String city, String country) {
+        this.id = id;
         this.city = city;
         this.country = country;
     }
 
-    public int getLocation_id() {
-        return location_id;
+    public int getId() {
+        return id;
     }
 
-    public void setLocation_id(int location_id) {
-        this.location_id = location_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCity() {
@@ -50,7 +64,7 @@ public class location {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 67 * hash + this.location_id;
+        hash = 53 * hash + this.id;
         return hash;
     }
 
@@ -66,7 +80,7 @@ public class location {
             return false;
         }
         final location other = (location) obj;
-        return this.location_id == other.location_id;
+        return this.id == other.id;
     }
     
 }

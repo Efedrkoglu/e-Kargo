@@ -4,29 +4,43 @@
  */
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.io.Serializable;
+
 /**
  *
  * @author Efe
  */
-public class packageStatus {
-    private int status_id;
+
+@Entity
+@Table(name = "packageStatus")
+public class packageStatus implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
     private String description;
     
     public packageStatus() {
         
     }
     
-    public packageStatus(int status_id, String description) {
-        this.status_id = status_id;
+    public packageStatus(int id, String description) {
+        this.id = id;
         this.description = description;
     }
 
-    public int getStatus_id() {
-        return status_id;
+    public int getId() {
+        return id;
     }
 
-    public void setStatus_id(int status_id) {
-        this.status_id = status_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -40,7 +54,7 @@ public class packageStatus {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 41 * hash + this.status_id;
+        hash = 53 * hash + this.id;
         return hash;
     }
 
@@ -56,6 +70,7 @@ public class packageStatus {
             return false;
         }
         final packageStatus other = (packageStatus) obj;
-        return this.status_id == other.status_id;
+        return this.id == other.id;
     }
+    
 }

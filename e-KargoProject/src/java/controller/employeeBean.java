@@ -8,6 +8,7 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import entity.employee;
 import dao.employeeDAO;
+import jakarta.ejb.EJB;
 import java.io.Serializable;
 import java.util.ArrayList;
 /**
@@ -17,12 +18,23 @@ import java.util.ArrayList;
 
 @Named (value = "employeeBean")
 @SessionScoped
-public class employeeBean extends baseController<employee, employeeDAO> implements Serializable, IController<employee> {
+public class employeeBean extends baseController<employee> implements Serializable, IController<employee> {
+    
+    @EJB
+    private employeeDAO dao;
     
     private int page;
     
     public employeeBean() {
         
+    }
+
+    public employeeDAO getDao() {
+        return dao;
+    }
+
+    public void setDao(employeeDAO dao) {
+        this.dao = dao;
     }
     
     @Override
@@ -31,36 +43,31 @@ public class employeeBean extends baseController<employee, employeeDAO> implemen
     }
 
     @Override
-    public employeeDAO newDAO() {
-        return new employeeDAO();
-    }
-
-    @Override
     public ArrayList<employee> select() {
-        super.setList(super.getDao().getList());
+        super.setList(this.dao.getList());
         return super.getList();
     }
 
     @Override
     public void insert() {
-        super.getDao().insert(entity);
-        super.setEntity(newEntity());
+        this.dao.insert(entity);
+        super.clearForm();
     }
 
     @Override
     public void update() {
-        super.getDao().update(entity);
-        super.setEntity(newEntity());
+        this.dao.update(entity);
+        super.clearForm();
     }
 
     @Override
     public void delete(employee entity) {
-        super.getDao().delete(entity);
-        super.setEntity(newEntity());
+        this.dao.delete(entity);
+        super.clearForm();
     }
     
     public ArrayList<employee> page() {
-        return super.getDao().getPage(this.getPage());
+        return this.dao.getPage(this.getPage());
     }
     
     public int getPage() {
@@ -73,8 +80,8 @@ public class employeeBean extends baseController<employee, employeeDAO> implemen
     public void setPage(int page) {
         if(page <= 0)
             page = 1;
-        else if(page > this.getDao().maxPage())
-            page = this.getDao().maxPage();
+        else if(page > this.dao.maxPage())
+            page = this.dao.maxPage();
         
         this.page = page;
     }

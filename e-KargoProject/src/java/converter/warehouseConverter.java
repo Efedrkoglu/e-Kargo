@@ -42,7 +42,7 @@ public class warehouseConverter implements Converter{
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object t) {
         warehouse w = (warehouse)t;
-        return String.valueOf(w.getWarehouse_id());
+        return String.valueOf(w.getId());
     }
     
 }

@@ -42,7 +42,7 @@ public class customerConverter implements Converter {
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object t) {
         customer c = (customer)t;
-        return String.valueOf(c.getCustomer_id());
+        return String.valueOf(c.getId());
     }
     
 }

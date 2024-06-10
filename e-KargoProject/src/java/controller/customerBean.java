@@ -6,6 +6,7 @@ package controller;
 
 import dao.customerDAO;
 import entity.customer;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import java.io.Serializable;
@@ -18,51 +19,56 @@ import java.util.ArrayList;
 
 @Named (value = "customerBean")
 @SessionScoped
-public class customerBean extends baseController<customer, customerDAO> implements Serializable, IController<customer> {
-      
+public class customerBean extends baseController<customer> implements Serializable, IController<customer> {
+    
+    @EJB
+    private customerDAO dao;
+    
     private int page;
     
     public customerBean() {
         
     }
 
+    public customerDAO getDao() {
+        return dao;
+    }
+
+    public void setDao(customerDAO dao) {
+        this.dao = dao;
+    }
+
     @Override
     public customer newEntity() {
         return new customer();
     }
-
-    @Override
-    public customerDAO newDAO() {
-        return new customerDAO();
-    }
     
     @Override
     public ArrayList<customer> select() {
-        super.setList(super.getDao().getList());
+        super.setList(this.dao.getList());
         return super.getList();
     }
 
     @Override
     public void insert() {
-        super.getDao().insert(entity);
-        super.setEntity(newEntity());
+        this.dao.insert(entity);
+        super.clearForm();
     }
 
     @Override
     public void update() {
-        super.getDao().update(entity);
-        super.setEntity(newEntity());
+        this.dao.update(entity);
+        super.clearForm();
     }
 
     @Override
     public void delete(customer entity) {
-        System.out.println("sa");
-        super.getDao().delete(entity);
-        super.setEntity(newEntity());
+        this.dao.delete(entity);
+        super.clearForm();
     }
 
     public ArrayList<customer> page() {
-        return super.getDao().getPage(this.getPage());
+        return this.dao.getPage(this.getPage());
     }
     
     public int getPage() {
@@ -75,8 +81,8 @@ public class customerBean extends baseController<customer, customerDAO> implemen
     public void setPage(int page) {
         if(page <= 0)
             page = 1;
-        else if(page > this.getDao().maxPage())
-            page = this.getDao().maxPage();
+        else if(page > this.dao.maxPage())
+            page = this.dao.maxPage();
         
         this.page = page;
     }

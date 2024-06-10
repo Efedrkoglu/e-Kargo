@@ -4,14 +4,33 @@
  */
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.io.Serializable;
+
 /**
  *
  * @author Efe
  */
-public class carrier {
+
+@Entity
+@Table(name = "carrier")
+public class carrier implements Serializable {
     
-    private int carrier_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
+    @ManyToOne
+    @JoinColumn(name = "shipment_id", referencedColumnName = "ID")
     private shipment shipment;
+    
     private String phone_number;
     private String email;
     private String name;
@@ -20,20 +39,20 @@ public class carrier {
         
     }
 
-    public carrier(int carrier_id, shipment shipment, String phone_number, String email, String name) {
-        this.carrier_id = carrier_id;
+    public carrier(int id, shipment shipment, String phone_number, String email, String name) {
+        this.id = id;
         this.shipment = shipment;
         this.phone_number = phone_number;
         this.email = email;
         this.name = name;
     }
 
-    public int getCarrier_id() {
-        return carrier_id;
+    public int getId() {
+        return id;
     }
 
-    public void setCarrier_id(int carrier_id) {
-        this.carrier_id = carrier_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public shipment getShipment() {
@@ -67,11 +86,5 @@ public class carrier {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Override
-    public String toString() {
-        return "carrier{" + "carrier_id=" + carrier_id + ", shipment_id=" + shipment.getShipment_id() + ", phone_number=" + phone_number + ", email=" + email + ", name=" + name + '}';
-    }
-    
     
 }

@@ -8,6 +8,9 @@ import entity.customer;
 import entity.location;
 import entity.packageStatus;
 import entity.shipment;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
+import java.io.Serializable;
 import util.DbConnection;
 import java.sql.*;
 import java.time.LocalDate;
@@ -16,7 +19,10 @@ import java.util.ArrayList;
  *
  * @author Efe
  */
-public class shipmentDAO extends DbConnection{
+
+@Local
+@Stateless
+public class shipmentDAO extends BaseDAO<shipment> implements Serializable {
     
     private customerDAO cDao;
     private locationDAO lDao;
@@ -55,12 +61,13 @@ public class shipmentDAO extends DbConnection{
         this.psDao = psDao;
     }
     
+    @Override
     public shipment getById(int id) {
         shipment s = null;
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from shipment where shipment_id=" + id);
+            ResultSet rs = st.executeQuery("select * from shipment where id=" + id);
             rs.next();
             
             Date estimatedDeliveryFromDb = rs.getDate("estimated_delivery");
@@ -73,7 +80,7 @@ public class shipmentDAO extends DbConnection{
             location toL = this.getlDao().getById(rs.getInt("to_location_id"));
             packageStatus ps = this.getPsDao().getById(rs.getInt("package_status_id"));
             
-            s = new shipment(rs.getInt("shipment_id"), estimatedDelivery, deliveredAt, c, fromL, toL, ps, rs.getString("tracking_number"));
+            s = new shipment(rs.getInt("id"), estimatedDelivery, deliveredAt, c, fromL, toL, ps, rs.getString("trackingNumber"));
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
@@ -81,50 +88,14 @@ public class shipmentDAO extends DbConnection{
         
         return s;
     }
-        
-    public void insert(shipment s) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into shipment values(default, '" + s.getEstimated_delivery() + "', '"
-                            + s.getDelivered_at() + "', " + s.getCustomer().getCustomer_id() + ", " + s.getFromLocation().getLocation_id()
-                            + ", " + s.getToLocation().getLocation_id() + ", " + s.getPackageStatus().getStatus_id() + ", '"
-                            + s.getTrackingNumber() + "')");
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
     
-    public void update(shipment s) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("update shipment set estimated_delivery='" + s.getEstimated_delivery() + "', delivered_at='" 
-                            + s.getDelivered_at() + "', customer_id=" + s.getCustomer().getCustomer_id() + ", from_location_id="
-                            + s.getFromLocation().getLocation_id() + ", to_location_id=" + s.getToLocation().getLocation_id() 
-                            + ", package_status_id=" + s.getPackageStatus().getStatus_id() + ", tracking_number='" + s.getTrackingNumber()
-                            + "' where shipment_id=" + s.getShipment_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void delete(shipment s) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("delete from shipment where shipment_id=" + s.getShipment_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
+    @Override
     public ArrayList<shipment> getList() {
         ArrayList<shipment> list = new ArrayList<>();
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from shipment order by shipment_id");
+            ResultSet rs = st.executeQuery("select * from shipment order by id");
             
             while(rs.next()) {
                 Date estimatedDeliveryFromDb = rs.getDate("estimated_delivery");
@@ -137,7 +108,7 @@ public class shipmentDAO extends DbConnection{
                 location toL = this.getlDao().getById(rs.getInt("to_location_id"));
                 packageStatus ps = this.getPsDao().getById(rs.getInt("package_status_id"));
                 
-                list.add(new shipment(rs.getInt("shipment_id"), estimatedDelivery, deliveredAt, c, fromL, toL, ps, rs.getString("tracking_number")));
+                list.add(new shipment(rs.getInt("id"), estimatedDelivery, deliveredAt, c, fromL, toL, ps, rs.getString("trackingNumber")));
             }
         }
         catch(Exception e) {
@@ -151,7 +122,7 @@ public class shipmentDAO extends DbConnection{
         int maxPage = 1;
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select count(shipment_id) as c from shipment");
+            ResultSet rs = st.executeQuery("select count(id) as c from shipment");
             rs.next();
             int count = rs.getInt("c");
             maxPage = (int)Math.ceil((double)count / (double)10);
@@ -171,7 +142,7 @@ public class shipmentDAO extends DbConnection{
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from shipment order by shipment_id offset " + ((page - 1) * 10) + " limit 10");
+            ResultSet rs = st.executeQuery("select * from shipment order by id offset " + ((page - 1) * 10) + " limit 10");
             
             while(rs.next()) {
                 Date estimatedDeliveryFromDb = rs.getDate("estimated_delivery");
@@ -184,7 +155,7 @@ public class shipmentDAO extends DbConnection{
                 location toL = this.getlDao().getById(rs.getInt("to_location_id"));
                 packageStatus ps = this.getPsDao().getById(rs.getInt("package_status_id"));
                 
-                list.add(new shipment(rs.getInt("shipment_id"), estimatedDelivery, deliveredAt, c, fromL, toL, ps, rs.getString("tracking_number")));
+                list.add(new shipment(rs.getInt("id"), estimatedDelivery, deliveredAt, c, fromL, toL, ps, rs.getString("trackingNumber")));
             }
         }
         catch(Exception e) {

@@ -4,17 +4,22 @@
  */
 package dao;
 
-import util.DbConnection;
 import entity.Package;
 import entity.shipment;
 import entity.warehouse;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 /**
  *
  * @author Efe
  */
-public class packageDAO extends DbConnection{
+
+@Local
+@Stateless
+public class packageDAO extends BaseDAO<Package> implements Serializable {
     
     private warehouseDAO wDao;
     private shipmentDAO sDao;
@@ -41,55 +46,19 @@ public class packageDAO extends DbConnection{
         this.sDao = sDao;
     }
     
-    
-    
-    public void insert(Package p) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into package values(default, " + p.getFromWarehouse().getWarehouse_id()
-                            + ", " + p.getToWarehouse().getWarehouse_id() + ", " + p.getShipment().getShipment_id()
-                            + ", '" + p.getContent() + "', " + p.getValue() + ", " + p.getWeight() + ")");
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void update(Package p) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("update package set from_warehouse_id=" + p.getFromWarehouse().getWarehouse_id() 
-                            + ", to_warehouse_id=" + p.getToWarehouse().getWarehouse_id() + ", shipment_id=" 
-                            + p.getShipment().getShipment_id() + ", content='" + p.getContent() + "', value="
-                            + p.getValue() + ", weight=" + p.getWeight() + " where package_id=" + p.getPackage_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void delete(Package p) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("delete from package where package_id=" + p.getPackage_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
+    @Override
     public ArrayList<Package> getList() {
         ArrayList<Package> list = new ArrayList<>();
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from package order by package_id");
+            ResultSet rs = st.executeQuery("select * from package order by id");
             
             while(rs.next()) {
                 warehouse fromWarehouse = this.getwDao().getById(rs.getInt("from_warehouse_id"));
                 warehouse toWarehouse = this.getwDao().getById(rs.getInt("to_warehouse_id"));
                 shipment shipment = this.getsDao().getById(rs.getInt("shipment_id"));
-                list.add(new Package(rs.getInt("package_id"), fromWarehouse, toWarehouse, shipment, rs.getString("content"), rs.getDouble("value"), rs.getDouble("weight")));
+                list.add(new Package(rs.getInt("id"), fromWarehouse, toWarehouse, shipment, rs.getString("content"), rs.getDouble("value"), rs.getDouble("weight")));
             }
         }
         catch(Exception e) {
@@ -103,7 +72,7 @@ public class packageDAO extends DbConnection{
         int maxPage = 1;
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select count(package_id) as c from package");
+            ResultSet rs = st.executeQuery("select count(id) as c from package");
             rs.next();
             int count = rs.getInt("c");
             maxPage = (int)Math.ceil((double)count / (double)10);
@@ -123,13 +92,13 @@ public class packageDAO extends DbConnection{
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from package order by package_id offset " + ((page - 1) * 10) + " limit 10");
+            ResultSet rs = st.executeQuery("select * from package order by id offset " + ((page - 1) * 10) + " limit 10");
             
             while(rs.next()) {
                 warehouse fromWarehouse = this.getwDao().getById(rs.getInt("from_warehouse_id"));
                 warehouse toWarehouse = this.getwDao().getById(rs.getInt("to_warehouse_id"));
                 shipment shipment = this.getsDao().getById(rs.getInt("shipment_id"));
-                list.add(new Package(rs.getInt("package_id"), fromWarehouse, toWarehouse, shipment, rs.getString("content"), rs.getDouble("value"), rs.getDouble("weight")));
+                list.add(new Package(rs.getInt("id"), fromWarehouse, toWarehouse, shipment, rs.getString("content"), rs.getDouble("value"), rs.getDouble("weight")));
             }
         }
         catch(Exception e) {
@@ -137,5 +106,10 @@ public class packageDAO extends DbConnection{
         }
         
         return list;
+    }
+
+    @Override
+    public Package getById(int id) {
+        return null;
     }
 }

@@ -6,6 +6,9 @@ package dao;
 
 import util.DbConnection;
 import entity.packageStatus;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -13,17 +16,21 @@ import java.util.ArrayList;
  *
  * @author Efe
  */
-public class packageStatusDAO extends DbConnection{
+
+@Local
+@Stateless
+public class packageStatusDAO extends BaseDAO<packageStatus> implements Serializable {
     
+    @Override
     public packageStatus getById(int id) {
         packageStatus ps = null;
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from packageStatus where status_id=" + id);
+            ResultSet rs = st.executeQuery("select * from packageStatus where id=" + id);
             rs.next();
             
-            ps = new packageStatus(rs.getInt("status_id"), rs.getString("description"));
+            ps = new packageStatus(rs.getInt("id"), rs.getString("description"));
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
@@ -32,46 +39,16 @@ public class packageStatusDAO extends DbConnection{
         return ps;
     }
     
-    public void insert(packageStatus ps) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into packageStatus values(default, '" + ps.getDescription() + "')");
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void update(packageStatus ps) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("update packageStatus set description='" + ps.getDescription() + "'"
-                            + " where status_id=" + ps.getStatus_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void delete(packageStatus ps) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("delete from packageStatus where status_id=" + ps.getStatus_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
+    @Override
     public ArrayList<packageStatus> getList() {
         ArrayList<packageStatus> list = new ArrayList<>();
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from packageStatus order by status_id");
+            ResultSet rs = st.executeQuery("select * from packageStatus order by id");
             
             while(rs.next()) {
-                list.add(new packageStatus(rs.getInt("status_id"), rs.getString("description")));
+                list.add(new packageStatus(rs.getInt("id"), rs.getString("description")));
             }
         }
         catch(Exception e) {
@@ -85,7 +62,7 @@ public class packageStatusDAO extends DbConnection{
         int maxPage = 1;
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select count(status_id) as c from packageStatus");
+            ResultSet rs = st.executeQuery("select count(id) as c from packageStatus");
             rs.next();
             int count = rs.getInt("c");
             maxPage = (int)Math.ceil((double)count / (double)10);
@@ -105,10 +82,10 @@ public class packageStatusDAO extends DbConnection{
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from packageStatus order by status_id offset " + ((page - 1) * 10) + " limit 10");
+            ResultSet rs = st.executeQuery("select * from packageStatus order by id offset " + ((page - 1) * 10) + " limit 10");
             
             while(rs.next()) {
-                list.add(new packageStatus(rs.getInt("status_id"), rs.getString("description")));
+                list.add(new packageStatus(rs.getInt("id"), rs.getString("description")));
             }
         }
         catch(Exception e) {

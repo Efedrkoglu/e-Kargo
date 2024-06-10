@@ -6,6 +6,9 @@ package dao;
 
 import entity.location;
 import entity.warehouse;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
+import java.io.Serializable;
 import util.DbConnection;
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +17,9 @@ import java.util.ArrayList;
  *
  * @author Efe
  */
-public class warehouseDAO extends DbConnection{
+@Local
+@Stateless
+public class warehouseDAO extends BaseDAO<warehouse> implements Serializable {
     
     private locationDAO lDao;
 
@@ -29,16 +34,17 @@ public class warehouseDAO extends DbConnection{
         this.lDao = lDao;
     }
     
+    @Override
     public warehouse getById(int id) {
         warehouse w = null;
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from warehouse where warehouse_id=" + id);
+            ResultSet rs = st.executeQuery("select * from warehouse where id=" + id);
             rs.next();
             
             location l = this.getlDao().getById(rs.getInt("location_id"));
-            w = new warehouse(rs.getInt("warehouse_id"), l);
+            w = new warehouse(rs.getInt("id"), l);
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
@@ -47,48 +53,17 @@ public class warehouseDAO extends DbConnection{
         return w;
     }
     
-    public void insert(warehouse w) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into warehouse values(default, " + 
-                    w.getLocation().getLocation_id() + ")");
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void update(warehouse w) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("update warehouse set location_id=" + w.getLocation().getLocation_id() + 
-                    " where warehouse_id=" + w.getWarehouse_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void delete(warehouse w) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("delete from warehouse where warehouse_id=" + w.getWarehouse_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
+    @Override
     public ArrayList<warehouse> getList() {
         ArrayList<warehouse> list = new ArrayList<>();
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from warehouse order by warehouse_id");
+            ResultSet rs = st.executeQuery("select * from warehouse order by id");
             
             while(rs.next()) {
                 location l = this.getlDao().getById(rs.getInt("location_id"));
-                list.add(new warehouse(rs.getInt("warehouse_id"), l));
+                list.add(new warehouse(rs.getInt("id"), l));
             }
         }
         catch(Exception e) {
@@ -102,7 +77,7 @@ public class warehouseDAO extends DbConnection{
         int maxPage = 1;
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select count(warehouse_id) as c from warehouse");
+            ResultSet rs = st.executeQuery("select count(id) as c from warehouse");
             rs.next();
             int count = rs.getInt("c");
             maxPage = (int)Math.ceil((double)count / (double)10);
@@ -122,11 +97,11 @@ public class warehouseDAO extends DbConnection{
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from warehouse order by warehouse_id offset " + ((page - 1) * 10) + " limit 10");
+            ResultSet rs = st.executeQuery("select * from warehouse order by id offset " + ((page - 1) * 10) + " limit 10");
             
             while(rs.next()) {
                 location l = this.getlDao().getById(rs.getInt("location_id"));
-                list.add(new warehouse(rs.getInt("warehouse_id"), l));
+                list.add(new warehouse(rs.getInt("id"), l));
             }
         }
         catch(Exception e) {

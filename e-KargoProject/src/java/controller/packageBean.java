@@ -8,6 +8,7 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import entity.Package;
 import dao.packageDAO;
+import jakarta.ejb.EJB;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -18,12 +19,23 @@ import java.util.ArrayList;
 
 @Named (value = "packageBean")
 @SessionScoped
-public class packageBean extends baseController<Package, packageDAO> implements Serializable, IController<Package> {
+public class packageBean extends baseController<Package> implements Serializable, IController<Package> {
+    
+    @EJB
+    private packageDAO dao;
     
     private int page;
     
     public packageBean() {
         
+    }
+
+    public packageDAO getDao() {
+        return dao;
+    }
+
+    public void setDao(packageDAO dao) {
+        this.dao = dao;
     }
     
     @Override
@@ -32,36 +44,31 @@ public class packageBean extends baseController<Package, packageDAO> implements 
     }
 
     @Override
-    public packageDAO newDAO() {
-        return new packageDAO();
-    }
-
-    @Override
     public ArrayList<Package> select() {
-        super.setList(super.getDao().getList());
+        super.setList(this.dao.getList());
         return super.getList();
     }
 
     @Override
     public void insert() {
-        super.getDao().insert(entity);
-        super.setEntity(newEntity());
+        this.dao.insert(entity);
+        super.clearForm();
     }
 
     @Override
     public void update() {
-        super.getDao().update(entity);
-        super.setEntity(newEntity());
+        this.dao.update(entity);
+        super.clearForm();
     }
 
     @Override
     public void delete(Package entity) {
-        super.getDao().delete(entity);
-        super.setEntity(newEntity());
+        this.dao.delete(entity);
+        super.clearForm();
     }
     
     public ArrayList<Package> page() {
-        return super.getDao().getPage(this.getPage());
+        return this.dao.getPage(this.getPage());
     }
     
     public int getPage() {
@@ -74,8 +81,8 @@ public class packageBean extends baseController<Package, packageDAO> implements 
     public void setPage(int page) {
         if(page <= 0)
             page = 1;
-        else if(page > this.getDao().maxPage())
-            page = this.getDao().maxPage();
+        else if(page > this.dao.maxPage())
+            page = this.dao.maxPage();
         
         this.page = page;
     }

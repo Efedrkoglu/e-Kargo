@@ -5,6 +5,9 @@
 package dao;
 
 import entity.location;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
+import java.io.Serializable;
 import util.DbConnection;
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,16 +15,20 @@ import java.util.ArrayList;
  *
  * @author Efe
  */
-public class locationDAO extends DbConnection{
+
+@Local
+@Stateless
+public class locationDAO extends BaseDAO<location> implements Serializable {
     
+    @Override
     public location getById(int id) {
         location l = null;
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from location where location_id =" + id);
+            ResultSet rs = st.executeQuery("select * from location where id =" + id);
             rs.next();
             
-            l = new location(rs.getInt("location_id"), rs.getString("city"), rs.getString("country"));
+            l = new location(rs.getInt("id"), rs.getString("city"), rs.getString("country"));
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
@@ -30,47 +37,16 @@ public class locationDAO extends DbConnection{
         return l;
     }
     
-    public void insert(location l) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into location values(default, '" + l.getCity() + 
-                            "', '" + l.getCountry() + "')");
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void update(location l) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("update location set city='" + l.getCity() + "', country='" +l.getCountry()
-                            + "' where location_id=" + l.getLocation_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void delete(location l) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("delete from location where location_id=" + l.getLocation_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
+    @Override
     public ArrayList<location> getList() {
         ArrayList<location> list = new ArrayList<>();
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from location order by location_id");
+            ResultSet rs = st.executeQuery("select * from location order by id");
             
             while(rs.next()) {
-                list.add(new location(rs.getInt("location_id"), rs.getString("city"), rs.getString("country")));
+                list.add(new location(rs.getInt("id"), rs.getString("city"), rs.getString("country")));
             }
         }
         catch(Exception e) {
@@ -84,7 +60,7 @@ public class locationDAO extends DbConnection{
         int maxPage = 1;
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select count(location_id) as c from location");
+            ResultSet rs = st.executeQuery("select count(id) as c from location");
             rs.next();
             int count = rs.getInt("c");
             maxPage = (int)Math.ceil((double)count / (double)10);
@@ -104,10 +80,10 @@ public class locationDAO extends DbConnection{
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from location order by location_id offset " + ((page - 1) * 10) + " limit 10");
+            ResultSet rs = st.executeQuery("select * from location order by id offset " + ((page - 1) * 10) + " limit 10");
             
             while(rs.next()) {
-                list.add(new location(rs.getInt("location_id"), rs.getString("city"), rs.getString("country")));
+                list.add(new location(rs.getInt("id"), rs.getString("city"), rs.getString("country")));
             }
         }
         catch(Exception e) {

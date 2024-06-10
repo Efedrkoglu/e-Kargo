@@ -4,16 +4,41 @@
  */
 package entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.io.Serializable;
+
 /**
  *
  * @author Efe
  */
-public class Package {
+
+@Entity
+@Table(name = "Package")
+public class Package implements Serializable {
     
-    private int package_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
+    @ManyToOne
+    @JoinColumn(name = "from_warehouse_id", referencedColumnName = "ID")
     private warehouse fromWarehouse;
+    
+    @ManyToOne
+    @JoinColumn(name = "to_warehouse_id", referencedColumnName = "ID")
     private warehouse toWarehouse;
+    
+    @ManyToOne
+    @JoinColumn(name = "shipment_id", referencedColumnName = "ID")
     private shipment shipment;
+    
     private String content;
     private double value;
     private double weight;
@@ -22,8 +47,8 @@ public class Package {
         
     }
 
-    public Package(int package_id, warehouse fromWarehouse, warehouse toWarehouse, shipment shipment, String content, double value, double weight) {
-        this.package_id = package_id;
+    public Package(int id, warehouse fromWarehouse, warehouse toWarehouse, shipment shipment, String content, double value, double weight) {
+        this.id = id;
         this.fromWarehouse = fromWarehouse;
         this.toWarehouse = toWarehouse;
         this.shipment = shipment;
@@ -32,12 +57,12 @@ public class Package {
         this.weight = weight;
     }
 
-    public int getPackage_id() {
-        return package_id;
+    public int getId() {
+        return id;
     }
 
-    public void setPackage_id(int package_id) {
-        this.package_id = package_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public warehouse getFromWarehouse() {
@@ -87,11 +112,5 @@ public class Package {
     public void setWeight(double weight) {
         this.weight = weight;
     }
-
-    @Override
-    public String toString() {
-        return "Package{" + "package_id=" + package_id + ", fromWarehouse_id=" + fromWarehouse.getWarehouse_id() + ", toWarehouse_id=" + toWarehouse.getWarehouse_id() + ", shipment_id=" + shipment.getShipment_id() + ", content=" + content + ", value=" + value + ", weight=" + weight + '}';
-    }
-    
     
 }

@@ -6,6 +6,9 @@ package dao;
 
 import entity.carrier;
 import entity.shipment;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
+import java.io.Serializable;
 import util.DbConnection;
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +16,10 @@ import java.util.ArrayList;
  *
  * @author Efe
  */
-public class carrierDAO extends DbConnection{
+
+@Local
+@Stateless
+public class carrierDAO extends BaseDAO<carrier> implements Serializable {
     
     private shipmentDAO sDao;
 
@@ -28,49 +34,17 @@ public class carrierDAO extends DbConnection{
         this.sDao = sDao;
     }
     
-    public void insert(carrier c){
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("insert into carrier values(default, " + c.getShipment().getShipment_id()
-                            + ", '" + c.getPhone_number() + "', '" + c.getEmail() + "', '" + c.getName() + "')");
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void update(carrier c) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("update carrier set carrying_shipment_id=" + c.getShipment().getShipment_id() + ", phone_number='"
-                            + c.getPhone_number() + "', email='" + c.getEmail() + "', name='" + c.getName() 
-                            + "' where carrier_id=" + c.getCarrier_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    public void delete(carrier c) {
-        try {
-            Statement st = super.connect().createStatement();
-            st.executeUpdate("delete from carrier where carrier_id=" + c.getCarrier_id());
-        }
-        catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
+    @Override
     public ArrayList<carrier> getList() {
         ArrayList<carrier> list = new ArrayList<>();
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from carrier order by carrier_id");
+            ResultSet rs = st.executeQuery("select * from carrier order by id");
             
             while(rs.next()) {
-                shipment s = this.getsDao().getById(rs.getInt("carrying_shipment_id"));
-                list.add(new carrier(rs.getInt("carrier_id"), s, rs.getString("phone_number"), rs.getString("email"), rs.getString("name")));
+                shipment s = this.getsDao().getById(rs.getInt("shipment_id"));
+                list.add(new carrier(rs.getInt("id"), s, rs.getString("phone_number"), rs.getString("email"), rs.getString("name")));
             }
         }
         catch(Exception e) {
@@ -84,7 +58,7 @@ public class carrierDAO extends DbConnection{
         int maxPage = 1;
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select count(carrier_id) as c from carrier");
+            ResultSet rs = st.executeQuery("select count(id) as c from carrier");
             rs.next();
             int count = rs.getInt("c");
             maxPage = (int)Math.ceil((double)count / (double)10);
@@ -104,11 +78,11 @@ public class carrierDAO extends DbConnection{
         
         try {
             Statement st = super.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from carrier order by carrier_id offset " + ((page - 1) * 10) + " limit 10");
+            ResultSet rs = st.executeQuery("select * from carrier order by id offset " + ((page - 1) * 10) + " limit 10");
             
             while(rs.next()) {
-                shipment s = this.getsDao().getById(rs.getInt("carrying_shipment_id"));
-                list.add(new carrier(rs.getInt("carrier_id"), s, rs.getString("phone_number"), rs.getString("email"), rs.getString("name")));
+                shipment s = this.getsDao().getById(rs.getInt("shipment_id"));
+                list.add(new carrier(rs.getInt("id"), s, rs.getString("phone_number"), rs.getString("email"), rs.getString("name")));
             }
         }
         catch(Exception e) {
@@ -116,5 +90,10 @@ public class carrierDAO extends DbConnection{
         }
         
         return list;
+    }
+
+    @Override
+    public carrier getById(int id) {
+        return null;
     }
 }

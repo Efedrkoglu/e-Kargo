@@ -8,6 +8,7 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import entity.shipment;
 import dao.shipmentDAO;
+import jakarta.ejb.EJB;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -18,12 +19,23 @@ import java.util.ArrayList;
 
 @Named (value = "shipmentBean")
 @SessionScoped
-public class shipmentBean extends baseController<shipment, shipmentDAO> implements Serializable, IController<shipment> {
+public class shipmentBean extends baseController<shipment> implements Serializable, IController<shipment> {
+    
+    @EJB
+    private shipmentDAO dao;
     
     private int page;
     
     public shipmentBean() {
         
+    }
+
+    public shipmentDAO getDao() {
+        return dao;
+    }
+
+    public void setDao(shipmentDAO dao) {
+        this.dao = dao;
     }
     
     @Override
@@ -32,36 +44,31 @@ public class shipmentBean extends baseController<shipment, shipmentDAO> implemen
     }
 
     @Override
-    public shipmentDAO newDAO() {
-        return new shipmentDAO();
-    }
-
-    @Override
     public ArrayList<shipment> select() {
-        super.setList(super.getDao().getList());
+        super.setList(this.dao.getList());
         return super.getList();
     }
 
     @Override
     public void insert() {
-        super.getDao().insert(entity);
-        super.setEntity(newEntity());
+        this.dao.insert(entity);
+        super.clearForm();
     }
 
     @Override
     public void update() {
-        super.getDao().update(entity);
-        super.setEntity(newEntity());
+        this.dao.update(entity);
+        super.clearForm();
     }
 
     @Override
     public void delete(shipment entity) {
-        super.getDao().delete(entity);
-        super.setEntity(newEntity());
+        this.dao.delete(entity);
+        super.clearForm();
     }
     
     public ArrayList<shipment> page() {
-        return super.getDao().getPage(this.getPage());
+        return this.dao.getPage(this.getPage());
     }
     
     public int getPage() {
@@ -74,8 +81,8 @@ public class shipmentBean extends baseController<shipment, shipmentDAO> implemen
     public void setPage(int page) {
         if(page <= 0)
             page = 1;
-        else if(page > this.getDao().maxPage())
-            page = this.getDao().maxPage();
+        else if(page > this.dao.maxPage())
+            page = this.dao.maxPage();
         
         this.page = page;
     }

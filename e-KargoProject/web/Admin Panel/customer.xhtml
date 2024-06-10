@@ -13,16 +13,16 @@
                 Phone Number: <h:inputText value="#{customerBean.entity.phone_number}" />
                 Email: <h:inputText value="#{customerBean.entity.email}" />
                 Name: <h:inputText value="#{customerBean.entity.name}" />
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{customerBean.entity.customer_id == 0}" action="#{customerBean.insert()}" value="Insert"/>
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{customerBean.entity.customer_id != 0}" action="#{customerBean.update()}" value="Update"/>
-                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{customerBean.entity.customer_id != 0}" action="#{customerBean.setEntity(customerBean.newEntity())}" value="Clear"/>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{customerBean.formKontrol == 0}" action="#{customerBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{customerBean.formKontrol != 0}" action="#{customerBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{customerBean.formKontrol != 0}" action="#{customerBean.clearForm()}" value="Clear"/>
             </h:form>
             <hr/>
             <h:form>
                 <h:dataTable styleClass="table table-striped table-hover" value="#{customerBean.page()}" var="c">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
-                    #{c.customer_id}
+                    #{c.id}
                     </h:column>
                     <h:column>
                         <f:facet name="header">Number</f:facet>
@@ -37,7 +37,7 @@
                     #{c.name}
                     </h:column>
                     <h:column>
-                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{customerBean.setEntity(c)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{customerBean.setForm(c)}" value="Update"/>
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{customerBean.delete(c)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>

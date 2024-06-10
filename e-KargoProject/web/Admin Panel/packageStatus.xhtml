@@ -10,23 +10,23 @@
         <div class="container mt-5">
             <h:form>
                 Description: <h:inputText value="#{packageStatusBean.entity.description}" />
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{packageStatusBean.entity.status_id == 0}" action="#{packageStatusBean.insert()}" value="Insert"/>
-                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{packageStatusBean.entity.status_id != 0}" action="#{packageStatusBean.update()}" value="Update"/>
-                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{packageStatusBean.entity.status_id != 0}" action="#{packageStatusBean.setEntity(packageStatusBean.newEntity())}" value="Clear"/>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{packageStatusBean.formKontrol == 0}" action="#{packageStatusBean.insert()}" value="Insert"/>
+                <h:commandButton styleClass="btn btn-primary btn-sm" rendered="#{packageStatusBean.formKontrol != 0}" action="#{packageStatusBean.update()}" value="Update"/>
+                <h:commandButton styleClass="btn btn-secondary btn-sm" rendered="#{packageStatusBean.formKontrol != 0}" action="#{packageStatusBean.clearForm()}" value="Clear"/>
             </h:form>
             
             <h:form>
                 <h:dataTable styleClass="table table-striped table-hover" value="#{packageStatusBean.page()}" var="ps">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
-                        #{ps.status_id}
+                        #{ps.id}
                     </h:column>
                     <h:column>
                         <f:facet name="header">Description</f:facet>
                         #{ps.description}
                     </h:column>
                     <h:column>
-                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{packageStatusBean.setEntity(ps)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{packageStatusBean.setForm(ps)}" value="Update"/>
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{packageStatusBean.delete(ps)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>

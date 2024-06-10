@@ -8,6 +8,7 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import entity.location;
 import dao.locationDAO;
+import jakarta.ejb.EJB;
 import java.io.Serializable;
 import java.util.ArrayList;
 /**
@@ -17,12 +18,23 @@ import java.util.ArrayList;
 
 @Named (value = "locationBean")
 @SessionScoped
-public class locationBean extends baseController<location, locationDAO> implements Serializable, IController<location> {
-
+public class locationBean extends baseController<location> implements Serializable, IController<location> {
+    
+    @EJB
+    private locationDAO dao;
+    
     private int page;
     
     public locationBean() {
         
+    }
+
+    public locationDAO getDao() {
+        return dao;
+    }
+
+    public void setDao(locationDAO dao) {
+        this.dao = dao;
     }
     
     @Override
@@ -31,36 +43,31 @@ public class locationBean extends baseController<location, locationDAO> implemen
     }
 
     @Override
-    public locationDAO newDAO() {
-        return new locationDAO();
-    }
-
-    @Override
     public ArrayList<location> select() {
-        super.setList(super.getDao().getList());
+        super.setList(this.dao.getList());
         return super.getList();
     }
 
     @Override
     public void insert() {
-        super.getDao().insert(entity);
-        super.setEntity(newEntity());
+        this.dao.insert(entity);
+        super.clearForm();
     }
 
     @Override
     public void update() {
-        super.getDao().update(entity);
-        super.setEntity(newEntity());
+        this.dao.update(entity);
+        super.clearForm();
     }
 
     @Override
     public void delete(location entity) {
-        super.getDao().delete(entity);
-        super.setEntity(newEntity());
+        this.dao.delete(entity);
+        super.clearForm();
     }
     
     public ArrayList<location> page() {
-        return super.getDao().getPage(this.getPage());
+        return this.dao.getPage(this.getPage());
     }
     
     public int getPage() {
@@ -73,8 +80,8 @@ public class locationBean extends baseController<location, locationDAO> implemen
     public void setPage(int page) {
         if(page <= 0)
             page = 1;
-        else if(page > this.getDao().maxPage())
-            page = this.getDao().maxPage();
+        else if(page > this.dao.maxPage())
+            page = this.dao.maxPage();
         
         this.page = page;
     }

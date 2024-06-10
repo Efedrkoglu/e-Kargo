@@ -42,6 +42,6 @@ public class shipmentConverter implements Converter {
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object t) {
         shipment s = (shipment)t;
-        return String.valueOf(s.getShipment_id());
+        return String.valueOf(s.getId());
     }
 }

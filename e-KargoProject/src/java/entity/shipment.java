@@ -4,6 +4,14 @@
  */
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -11,23 +19,42 @@ import java.time.Month;
  *
  * @author Efe
  */
-public class shipment {
+
+@Entity
+@Table(name = "shipment")
+public class shipment implements Serializable {
     
-    private int shipment_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
     private LocalDate estimated_delivery;
     private LocalDate delivered_at;
+    
+    @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "ID")
     private customer customer;
+    
+    @ManyToOne
+    @JoinColumn(name = "from_location_id", referencedColumnName = "ID")
     private location fromLocation;
+    
+    @ManyToOne
+    @JoinColumn(name = "to_location_id", referencedColumnName = "ID")
     private location toLocation;
+    
+    @ManyToOne
+    @JoinColumn(name = "package_status_id", referencedColumnName = "ID")
     private packageStatus packageStatus;
+    
     private String trackingNumber;
     
     public shipment() {
         
     }
 
-    public shipment(int shipment_id, LocalDate estimated_delivery, LocalDate delivered_at, customer customer, location fromLocation, location toLocation, packageStatus packageStatus, String trackingNumber) {
-        this.shipment_id = shipment_id;
+    public shipment(int id, LocalDate estimated_delivery, LocalDate delivered_at, customer customer, location fromLocation, location toLocation, packageStatus packageStatus, String trackingNumber) {
+        this.id = id;
         this.estimated_delivery = estimated_delivery;
         this.delivered_at = delivered_at;
         this.customer = customer;
@@ -37,12 +64,12 @@ public class shipment {
         this.trackingNumber = trackingNumber;
     }
 
-    public int getShipment_id() {
-        return shipment_id;
+    public int getId() {
+        return id;
     }
 
-    public void setShipment_id(int shipment_id) {
-        this.shipment_id = shipment_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEstimated_delivery() {
@@ -108,14 +135,9 @@ public class shipment {
     }
 
     @Override
-    public String toString() {
-        return "shipment{" + "shipment_id=" + shipment_id + ", estimated_delivery=" + estimated_delivery + ", delivered_at=" + delivered_at + ", customer_id=" + customer.getCustomer_id() + ", fromLocation_id=" + fromLocation.getLocation_id() + ", toLocation_id=" + toLocation.getLocation_id() + ", packageStatus_id=" + packageStatus.getStatus_id() + ", trackingNumber=" + trackingNumber + '}';
-    }
-
-    @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + this.shipment_id;
+        int hash = 5;
+        hash = 17 * hash + this.id;
         return hash;
     }
 
@@ -131,6 +153,7 @@ public class shipment {
             return false;
         }
         final shipment other = (shipment) obj;
-        return this.shipment_id == other.shipment_id;
+        return this.id == other.id;
     }
+    
 }

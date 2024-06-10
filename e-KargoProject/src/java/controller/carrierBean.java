@@ -8,6 +8,7 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import entity.carrier;
 import dao.carrierDAO;
+import jakarta.ejb.EJB;
 import java.io.Serializable;
 import java.util.ArrayList;
 /**
@@ -17,12 +18,23 @@ import java.util.ArrayList;
 
 @Named (value = "carrierBean")
 @SessionScoped
-public class carrierBean extends baseController<carrier, carrierDAO> implements Serializable, IController<carrier> {
+public class carrierBean extends baseController<carrier> implements Serializable, IController<carrier> {
+    
+    @EJB
+    private carrierDAO dao;
     
     private int page;
     
     public carrierBean() {
         
+    }
+
+    public carrierDAO getDao() {
+        return dao;
+    }
+
+    public void setDao(carrierDAO dao) {
+        this.dao = dao;
     }
     
     @Override
@@ -31,36 +43,31 @@ public class carrierBean extends baseController<carrier, carrierDAO> implements 
     }
 
     @Override
-    public carrierDAO newDAO() {
-        return new carrierDAO();
-    }
-
-    @Override
     public ArrayList<carrier> select() {
-        super.setList(super.getDao().getList());
+        super.setList(this.dao.getList());
         return super.getList();
     }
 
     @Override
     public void insert() {
-        super.getDao().insert(entity);
-        super.setEntity(newEntity());
+        this.dao.insert(entity);
+        super.clearForm();
     }
 
     @Override
     public void update() {
-        super.getDao().update(entity);
-        super.setEntity(newEntity());
+        this.dao.update(entity);
+        super.clearForm();
     }
 
     @Override
     public void delete(carrier entity) {
-        super.getDao().delete(entity);
-        super.setEntity(newEntity());
+        this.dao.delete(entity);
+        super.clearForm();
     }
     
     public ArrayList<carrier> page() {
-        return super.getDao().getPage(this.getPage());
+        return this.dao.getPage(this.getPage());
     }
     
     public int getPage() {
@@ -73,8 +80,8 @@ public class carrierBean extends baseController<carrier, carrierDAO> implements 
     public void setPage(int page) {
         if(page <= 0)
             page = 1;
-        else if(page > this.getDao().maxPage())
-            page = this.getDao().maxPage();
+        else if(page > this.dao.maxPage())
+            page = this.dao.maxPage();
         
         this.page = page;
     }

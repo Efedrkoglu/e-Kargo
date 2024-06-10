@@ -42,7 +42,7 @@ public class packageStatusConverter implements Converter {
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object t) {
         packageStatus ps = (packageStatus)t;
-        return String.valueOf(ps.getStatus_id());
+        return String.valueOf(ps.getId());
     }
     
 }
