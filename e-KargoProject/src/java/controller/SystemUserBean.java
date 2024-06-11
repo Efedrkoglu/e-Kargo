@@ -89,10 +89,7 @@ public class SystemUserBean extends baseController<SystemUser> implements Serial
     public boolean validateRegisterUsername(FacesContext fc, UIComponent comp, Object obj) throws ValidatorException {
         String username = (String)obj;
         
-        if(username.isEmpty()) {
-            throw new ValidatorException(new FacesMessage("Kullanıcı adı alanı boş bırakılamaz!"));
-        }
-        else if(username.length() < 5) {
+        if(username.length() < 5) {
             throw new ValidatorException(new FacesMessage("Kullanıcı adı en az 5 karakter uzunluğunda olmalıdır!"));
         }
         
@@ -102,34 +99,10 @@ public class SystemUserBean extends baseController<SystemUser> implements Serial
     public boolean validateRegisterPassword(FacesContext fc, UIComponent comp, Object obj) throws ValidatorException {
         String password = (String)obj;
         
-        if(password.isEmpty()) {
-            throw new ValidatorException(new FacesMessage("Şifre alanı boş bırakılamaz!"));
-        }
-        else if(password.length() < 5) {
+        if(password.length() < 5) {
             throw new ValidatorException(new FacesMessage("Şifre en az 5 karakter uzunluğunda olmalıdır!"));
         }
-        
-        
-        return true;
-    }
-    
-    public boolean validateLoginUsername(FacesContext fc, UIComponent comp, Object obj) throws ValidatorException {
-        String username = (String)obj;
-        
-        if(username.isEmpty()) {
-            throw new ValidatorException(new FacesMessage("Kullanıcı adınızı giriniz."));
-        }
-        
-        return true;
-    }
-    
-    public boolean validateLoginPassword(FacesContext fc, UIComponent comp, Object obj) throws ValidatorException {
-        String password = (String)obj;
-        
-        if(password.isEmpty()) {
-            throw new ValidatorException(new FacesMessage("Şifrenizi giriniz."));
-        }
-        
+
         return true;
     }
     
