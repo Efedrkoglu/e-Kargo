@@ -14,35 +14,38 @@
             <h:form>
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
                     <div class="container-fluid">
-                        <h:commandLink action="/index" value="Home" styleClass="navbar-brand"/>
+                        <h:commandLink action="/Home Page/home" value="Home" styleClass="navbar-brand"/>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <h:commandLink action="/Admin Panel/customer" value="Customer" styleClass="nav-link"/>
+                                    <h:commandLink action="/Admin Panel/customer?faces-redirect=true" value="Customer" styleClass="nav-link"/>
                                 </li>
                                 <li class="nav-item">
-                                    <h:commandLink action="/Admin Panel/location" value="Location" styleClass="nav-link"/>
+                                    <h:commandLink action="/Admin Panel/location?faces-redirect=true" value="Location" styleClass="nav-link"/>
                                 </li>
                                 <li class="nav-item">
-                                    <h:commandLink action="/Admin Panel/warehouse" value="Warehouse" styleClass="nav-link"/>
+                                    <h:commandLink action="/Admin Panel/warehouse?faces-redirect=true" value="Warehouse" styleClass="nav-link"/>
                                 </li>
                                 <li class="nav-item">
-                                    <h:commandLink action="/Admin Panel/packageStatus" value="Package Status" styleClass="nav-link"/>
+                                    <h:commandLink action="/Admin Panel/packageStatus?faces-redirect=true" value="Package Status" styleClass="nav-link"/>
                                 </li>
                                 <li class="nav-item">
-                                    <h:commandLink action="/Admin Panel/package" value="Package" styleClass="nav-link"/>
+                                    <h:commandLink action="/Admin Panel/package?faces-redirect=true" value="Package" styleClass="nav-link"/>
                                 </li>
                                 <li class="nav-item">
-                                    <h:commandLink action="/Admin Panel/shipment" value="Shipment" styleClass="nav-link"/>
+                                    <h:commandLink action="/Admin Panel/shipment?faces-redirect=true" value="Shipment" styleClass="nav-link"/>
                                 </li>
                                 <li class="nav-item">
-                                    <h:commandLink action="/Admin Panel/employee" value="Employee" styleClass="nav-link"/>
+                                    <h:commandLink action="/Admin Panel/employee?faces-redirect=true" value="Employee" styleClass="nav-link"/>
                                 </li>
                                 <li class="nav-item">
-                                    <h:commandLink action="/Admin Panel/carrier" value="Carrier" styleClass="nav-link"/>
+                                    <h:commandLink action="/Admin Panel/carrier?faces-redirect=true" value="Carrier" styleClass="nav-link"/>
+                                </li>
+                                <li class="nav-item">
+                                    <h:commandLink action="/Admin Panel/systemUser?faces-redirect=true" value="Users" styleClass="nav-link"/>
                                 </li>
                             </ul>
                         </div>

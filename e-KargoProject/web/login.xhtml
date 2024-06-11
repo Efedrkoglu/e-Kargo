@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html">
+    <h:head>
+        <title>e-Kargo</title>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+    </h:head>
+    <h:body>
+        <div class="container mt-5">
+            <h2>e-Kargo</h2>
+            <h:form>
+                <h:commandButton action="#{systemUserBean.setSelection(0)}" value="Login"/>
+                <h:commandButton action="#{systemUserBean.setSelection(1)}" value="Register"/>
+            </h:form>
+            <hr/>
+            <h:form rendered="#{systemUserBean.selection == 0}">
+                Login<br/>
+                <hr/>
+                Username:
+                <h:inputText value="#{systemUserBean.entity.userName}" validator="#{systemUserBean.validateLoginUsername}"/><br/>
+                Password: 
+                <h:inputSecret value="#{systemUserBean.entity.password}" validator="#{systemUserBean.validateLoginPassword}" style="margin-left: 5.5px;"/><br/>
+                <h:commandButton action="#{systemUserBean.login()}" value="Login"/>
+            </h:form>
+            <h:form rendered="#{systemUserBean.selection == 1}">
+                Register<br/>
+                <hr/>
+                Username:
+                <h:inputText value="#{systemUserBean.entity.userName}" validator="#{systemUserBean.validateRegisterUsername}"/><br/>
+                Password:
+                <h:inputSecret value="#{systemUserBean.entity.password}" validator="#{systemUserBean.validateRegisterPassword}" style="margin-left: 5.5px;"/><br/>
+                <h:commandButton action="#{systemUserBean.register()}" value="Register"/>
+            </h:form>
+            <hr/>
+            <h:messages style="color: red; font-size: 12pt;"/>
+        </div>
+    </h:body>
+</html>

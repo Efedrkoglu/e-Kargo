@@ -7,7 +7,13 @@
       template="/template.xhtml">
     
     <ui:define name="content">
-        home content
+        <div class="container mt-5">
+            <h2>e-Kargo</h2>
+            Hoşgeldiniz <h:outputText value="#{systemUserBean.entity.userName}"/>
+            <h:form>
+                <h:commandButton action="/logout?faces-redirect=true" value="Logout"/>
+            </h:form>
+        </div>
     </ui:define>
     
 </ui:composition>
