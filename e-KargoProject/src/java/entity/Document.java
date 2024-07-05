@@ -4,33 +4,34 @@
  */
 package entity;
 
-
 /**
  *
- * @author dogacgulacan
+ * @author Efe
  */
-
 public class Document {
-    private long id;
-    private String filePath;
+    
+    private int id;
     private String fileName;
+    private String filePath;
     private String fileType;
+    
+    public Document() {
+        
+    }
 
-    public long getId() {
+    public Document(int id, String fileName, String filePath, String fileType) {
+        this.id = id;
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.fileType = fileType;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
-    }
-    
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 
     public String getFileName() {
@@ -41,6 +42,14 @@ public class Document {
         this.fileName = fileName;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
     public String getFileType() {
         return fileType;
     }
@@ -48,9 +57,5 @@ public class Document {
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
-
-   
-    
-    
     
 }

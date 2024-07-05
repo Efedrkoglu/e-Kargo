@@ -13,77 +13,66 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
- * @author dogacgulacan
+ * @author Efe
  */
 
 @Named
 @SessionScoped
 public class DocumentBean implements Serializable {
-    private Document document;
-    private List<Document> documentList;
-    private DocumentDAO documentDAO;
+    
+    private Document entity;
+    private DocumentDAO dao;
+    private ArrayList<Document> list;
     
     private Part doc;
     
-    private final String uploadTo ="/Users/dogacgulacan/Desktop/upload/";
+    private final String uploadTo = "C:\\Users\\efe44\\Desktop\\eKargoUpload\\";
     
-    
-    public void upload(){
-        try{
-            InputStream input =doc.getInputStream();
-            File f= new File(uploadTo+doc.getSubmittedFileName());
-            Files.copy(input, f.toPath());
-            
-            document =this.getDocument();
-            document.setFilePath(f.getParent());
-            document.setFileName(f.getName());
-            document.setFileType(doc.getContentType());
-            
-            this.getDocumentDAO().insert(document);
-            
-            
-        }catch (Exception e ){
-            System.out.println(e.getMessage());
-        }
+    public DocumentBean() {
         
     }
-
-    public String getUploadTo() {
-        return uploadTo;
-    }
     
-
-    public Document getDocument() {
-        if (this.document == null)
-            this.document= new Document();
-        return document;
+    public void upload() {
+        try {
+            InputStream input = doc.getInputStream();
+            File f = new File(uploadTo + doc.getSubmittedFileName());
+            Files.copy(input, f.toPath());
+            
+            entity = new Document(0, f.getName(), f.getParent(), doc.getContentType());
+            this.getDao().insert(entity);
+            entity = new Document();
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public void setDocument(Document document) {
-        this.document = document;
+    public Document getEntity() {
+        if(this.entity == null)
+            this.entity = new Document();
+        return entity;
     }
 
-    public List<Document> getDocumentList() {
-        this.documentList=this.getDocumentDAO().findAll();
-        return documentList;
+    public void setEntity(Document entity) {
+        this.entity = entity;
     }
 
-    public void setDocumentList(List<Document> documentList) {
-        this.documentList = documentList;
+    public DocumentDAO getDao() {
+        if(this.dao == null)
+            this.dao = new DocumentDAO();
+        return dao;
     }
 
-    public DocumentDAO getDocumentDAO() {
-        if (this.documentDAO == null)
-            this.documentDAO =  new DocumentDAO();
-        return documentDAO;
+    public void setDao(DocumentDAO dao) {
+        this.dao = dao;
     }
 
-    public void setDocumentDAO(DocumentDAO documentDAO) {
-        this.documentDAO = documentDAO;
+    public ArrayList<Document> getList() {
+        return this.getDao().getList();
     }
 
     public Part getDoc() {
@@ -93,8 +82,10 @@ public class DocumentBean implements Serializable {
     public void setDoc(Part doc) {
         this.doc = doc;
     }
-    
-    
+
+    public String getUploadTo() {
+        return uploadTo;
+    }
     
     
 }

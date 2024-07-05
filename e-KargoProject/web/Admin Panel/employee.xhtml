@@ -8,7 +8,7 @@
     
     <ui:define name="content">
         <div class="container mt-5">
-            <h:form>
+            <h:form id="employeeForm">
                 Warehouse:
                 <h:selectOneMenu value="#{employeeBean.entity.warehouse}" converter="warehouseConverter">
                     <f:selectItems value="#{warehouseBean.select()}" var="w" itemValue="#{w}" itemLabel="#{w.id}"/>
@@ -16,11 +16,17 @@
                 Phone Number: <h:inputText value="#{employeeBean.entity.phone_number}"/>
                 Email: <h:inputText value="#{employeeBean.entity.email}"/>
                 Name: <h:inputText value="#{employeeBean.entity.name}"/>
-                <h:commandButton styleClass="btn btn-primary" rendered="#{employeeBean.formKontrol == 0}" action="#{employeeBean.insert()}" value="Insert"/>
-                <h:commandButton styleClass="btn btn-primary" rendered="#{employeeBean.formKontrol != 0}" action="#{employeeBean.update()}" value="Update"/>
-                <h:commandButton styleClass="btn btn-secondary" rendered="#{employeeBean.formKontrol != 0}" action="#{employeeBean.clearForm()}" value="Clear"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{employeeBean.formKontrol == 0}" action="#{employeeBean.insert()}" value="Insert">
+                    <f:ajax execute="employeeForm" render="employeeTable employeeForm"/>
+                </h:commandButton>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{employeeBean.formKontrol != 0}" action="#{employeeBean.update()}" value="Update">
+                    <f:ajax execute="employeeForm" render="employeeTable employeeForm"/>
+                </h:commandButton>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{employeeBean.formKontrol != 0}" action="#{employeeBean.clearForm()}" value="Clear">
+                    <f:ajax execute="@this" render="employeeForm"/>
+                </h:commandButton>
             </h:form>
-            <h:form>
+            <h:form id="employeeTable">
                 <h:dataTable styleClass="table table-striped table-hover" value="#{employeeBean.page()}" var="e">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
@@ -47,7 +53,10 @@
                         #{e.name}
                     </h:column>
                     <h:column>
-                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{employeeBean.setForm(e)}" value="Update"/>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{employeeBean.setForm(e)}" value="Update">
+                            <f:ajax execute="@this" render="employeeForm"/>
+                        </h:commandButton>
+                            
                         <h:commandButton styleClass="btn btn-danger btn-sm" action="#{employeeBean.delete(e)}" value="Delete"/>
                     </h:column>
                 </h:dataTable>

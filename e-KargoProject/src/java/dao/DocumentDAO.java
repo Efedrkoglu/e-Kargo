@@ -6,65 +6,67 @@ package dao;
 
 import entity.Document;
 import java.util.ArrayList;
-import java.util.List;
-import java.sql.*;
 import util.DbConnection;
-
+import java.sql.*;
 
 /**
  *
- * @author dogacgulacan
+ * @author Efe
  */
-public class DocumentDAO {
-    private DbConnection dbConnection;
-    private Connection connection;
+
+public class DocumentDAO extends DbConnection {
     
-    public List<Document> findAll() {
-        List<Document> dList = new ArrayList<>();
-        try{
-            PreparedStatement pst=this.getConnection().prepareStatement("Select * from document");
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-                Document d = new Document();
-                d.setId(rs.getLong("id"));
-                d.setFilePath(rs.getString("path"));
-                d.setFileName(rs.getString("name"));
-                d.setFileType(rs.getString("type"));
-                dList.add(d);
-                
-            }
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
+    public void insert(Document d) {
+        try {
+            Statement st = super.connect().createStatement();
+            st.executeUpdate("insert into documents values(default, '" + d.getFileName() + "', '" + d.getFilePath() + "', "
+                            + "'" + d.getFileType() + "')");
         }
-        
-        return dList;
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
     
+    public void update(Document d) {
+        try {
+            Statement st = super.connect().createStatement();
+            st.executeUpdate("update documents set fileName=" + d.getFileName() + ", filePath=" + d.getFilePath()
+                            + ", fileType=" + d.getFileType() + " where id=" + d.getId());
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     
-    public void insert(Document d){
-        String query="insert into document(path,name,type) values(?,?,?)";
-        try{
-            PreparedStatement pst=this.getConnection().prepareStatement(query);
-            pst.setString(1,d.getFilePath());
-            pst.setString(2,d.getFileName());
-            pst.setString(3,d.getFileType());
-            pst.executeUpdate();
+    public void delete(Document d) {
+        try {
+            Statement st = super.connect().createStatement();
+            st.executeUpdate("delete from documents where id=" + d.getId());
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public ArrayList<Document> getList() {
+        ArrayList<Document> list = new ArrayList<>();
+        
+        try {
+            Statement st = super.connect().createStatement();
+            ResultSet rs = st.executeQuery("select * from documents order by id");
             
-            }catch(SQLException e){
-            System.out.println(e.getMessage());
+            while(rs.next()) {
+                list.add(new Document(rs.getInt("id"), rs.getString("fileName"), rs.getString("filePath"), rs.getString("fileType")));
+            }
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
         }
         
+        return list;
     }
-    public DbConnection getDbConnection(){
-        if(this.dbConnection==null)
-            this.dbConnection= new DbConnection() {};
-        return dbConnection;
-    }
-    public Connection getConnection(){
-        if(this.connection==null)
-            this.connection=this.getDbConnection().connect();
-        return connection;
+    
+    public Document getById(int id) {
+        return new Document();
     }
 }
-
-   

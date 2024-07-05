@@ -21,7 +21,7 @@ import util.DbConnection;
 @Stateless
 public abstract class BaseDAO<E> extends DbConnection implements Serializable {
     
-    @PersistenceContext(unitName = "e-KargoProjectPU")
+    @PersistenceContext(unitName = "e-KargoPU")
     protected EntityManager em;
     
     public void insert(E entity) {
