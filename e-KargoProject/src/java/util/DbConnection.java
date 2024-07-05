@@ -16,7 +16,7 @@ public abstract class DbConnection {
         if(this.connection == null) {
             try {
                 Class.forName("org.postgresql.Driver");
-                this.connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/eKargoJPA", "postgres", "passwd");
+                this.connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/e-Kargo", "postgres", "dogac123");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

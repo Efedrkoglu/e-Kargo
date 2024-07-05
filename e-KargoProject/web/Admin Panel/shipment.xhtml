@@ -12,31 +12,40 @@
                 <table class="table">
                     <tr>
                         <td>Estimated Delivery:</td>
-                        <td> <h:inputText value="#{shipmentBean.entity.estimated_delivery}"/></td>
+                        <td> <h:inputText value="#{shipmentBean.entity.estimated_delivery}">
+                                <f:ajax event="blur" render="@form"/>
+                            </h:inputText></td>
                         <td>Delivered At:</td>
-                        <td> <h:inputText value="#{shipmentBean.entity.delivered_at}"/></td>
+                        <td> <h:inputText value="#{shipmentBean.entity.delivered_at}">
+                                <f:ajax event="blur" render="@form"/>
+                            </h:inputText></td>
                     </tr>
                     <tr>
                         <td>Customer:</td>
                         <td>
                             <h:selectOneMenu value="#{shipmentBean.entity.customer}" converter="customerConverter">
                                 <f:selectItems value="#{customerBean.select()}" var="c" itemValue="#{c}" itemLabel="#{c.id}, #{c.name}"/>
+                                <f:ajax event="change" render="@form"/>
                             </h:selectOneMenu>
                         </td>
                         <td>Tracking Number:</td>
-                        <td> <h:inputText value="#{shipmentBean.entity.trackingNumber}"/></td>
+                        <td> <h:inputText value="#{shipmentBean.entity.trackingNumber}">
+                                <f:ajax event="blur" render="@form"/>
+                            </h:inputText></td>
                     </tr>
                     <tr>
                         <td>From Location:</td>
                         <td>
                             <h:selectOneMenu value="#{shipmentBean.entity.fromLocation}" converter="locationConverter">
                                 <f:selectItems value="#{locationBean.select()}" var="l" itemValue="#{l}" itemLabel="#{l.city}, #{l.country}"/>
+                                <f:ajax event="change" render="@form"/>
                             </h:selectOneMenu>
                         </td>
                         <td>To Location:</td>
                         <td>
                             <h:selectOneMenu value="#{shipmentBean.entity.toLocation}" converter="locationConverter">
                                 <f:selectItems value="#{locationBean.select()}" var="l" itemValue="#{l}" itemLabel="#{l.city}, #{l.country}"/>
+                                <f:ajax event="change" render="@form"/>
                             </h:selectOneMenu>
                         </td>
                     </tr>
@@ -45,13 +54,20 @@
                         <td>
                             <h:selectOneMenu value="#{shipmentBean.entity.packageStatus}" converter="packageStatusConverter">
                                 <f:selectItems value="#{packageStatusBean.select()}" var="ps" itemValue="#{ps}" itemLabel="#{ps.description}"/>
+                                <f:ajax event="change" render="@form"/>
                             </h:selectOneMenu>
                         </td>
                     </tr>
                 </table>
-                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.formKontrol == 0}" action="#{shipmentBean.insert()}" value="Insert"/>
-                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.formKontrol != 0}" action="#{shipmentBean.update()}" value="Update"/>
-                <h:commandButton styleClass="btn btn-secondary" rendered="#{shipmentBean.formKontrol != 0}" action="#{shipmentBean.clearForm()}" value="Clear"/>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.formKontrol == 0}" action="#{shipmentBean.insert()}" value="Insert">
+                    <f:ajax render="@form"/>
+                </h:commandButton>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.formKontrol != 0}" action="#{shipmentBean.update()}" value="Update">
+                    <f:ajax render="@form"/>
+                </h:commandButton>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{shipmentBean.formKontrol != 0}" action="#{shipmentBean.clearForm()}" value="Clear">
+                    <f:ajax render="@form"/>
+                </h:commandButton>
             </h:form>
             <h:form>
                 <h:dataTable styleClass="table table-striped table-hover" value="#{shipmentBean.page()}" var="s">
@@ -94,12 +110,20 @@
                         #{s.trackingNumber}
                     </h:column>
                     <h:column>
-                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{shipmentBean.setForm(s)}" value="Update"/>
-                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{shipmentBean.delete(s)}" value="Delete"/>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{shipmentBean.setForm(s)}" value="Update">
+                            <f:ajax render="@form"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{shipmentBean.delete(s)}" value="Delete">
+                            <f:ajax render="@form"/>
+                        </h:commandButton>
                     </h:column>
                 </h:dataTable>
-                <h:commandButton styleClass="btn btn-secondary" rendered="#{shipmentBean.page != 1}" action="#{shipmentBean.setPage(shipmentBean.page - 1)}" value="&larr;"/>
-                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.page != shipmentBean.dao.maxPage()}" action="#{shipmentBean.setPage(shipmentBean.page + 1)}" value="&rarr;"/>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{shipmentBean.page != 1}" action="#{shipmentBean.setPage(shipmentBean.page - 1)}" value="&larr;">
+                    <f:ajax render="@form"/>
+                </h:commandButton>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{shipmentBean.page != shipmentBean.dao.maxPage()}" action="#{shipmentBean.setPage(shipmentBean.page + 1)}" value="&rarr;">
+                    <f:ajax render="@form"/>
+                </h:commandButton>
             </h:form>
         </div>
     </ui:define>
